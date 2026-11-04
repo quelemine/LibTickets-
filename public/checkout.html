@@ -461,15 +461,6 @@
               <div class="error-message">Please enter your phone number</div>
             </div>
 
-            <div class="form-group">
-              <label for="currency">Select Currency *</label>
-              <select id="currency" name="currency" required>
-                <option value="LRD">Liberian Dollars (LRD)</option>
-                <option value="USD">US Dollars (USD)</option>
-              </select>
-              <div class="error-message">Please select a currency</div>
-            </div>
-
             <button type="submit" class="btn-checkout" id="guest-submit-btn">Complete Booking (Test Mode)</button>
             <button type="button" class="btn-secondary" onclick="showOptions()">Back to Options</button>
           </form>
@@ -493,6 +484,13 @@
 
         <div class="order-summary" id="order-summary">
           <h3>Your Tickets</h3>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="summary-currency">Display Currency</label>
+            <select id="summary-currency" onchange="updateOrderSummary()">
+              <option value="LRD">Liberian Dollars (LRD)</option>
+              <option value="USD">US Dollars (USD)</option>
+            </select>
+          </div>
           <div id="order-items">
             <p>Loading...</p>
           </div>
@@ -549,7 +547,6 @@
         document.getElementById('full_name').value = data.full_name || '';
         document.getElementById('email').value = data.email || '';
         document.getElementById('phone').value = data.phone || '';
-        document.getElementById('delivery_method').value = data.delivery_method || 'email';
         // Clear the saved data
         sessionStorage.removeItem('savedCheckoutData');
       }
@@ -561,8 +558,12 @@
       if (data) {
         checkoutData = JSON.parse(data);
         displayEventInfo();
-        // Wait for currency element to be available before displaying order summary
+        // Set summary currency to match the ticket currency
         setTimeout(() => {
+          const summaryCurrencySelect = document.getElementById('summary-currency');
+          if (summaryCurrencySelect && checkoutData.items && checkoutData.items.length > 0) {
+            summaryCurrencySelect.value = checkoutData.items[0].currency;
+          }
           displayOrderSummary();
         }, 200);
       } else {
@@ -585,8 +586,8 @@
       if (!checkoutData || !checkoutData.items) return;
 
       const orderItemsDiv = document.getElementById('order-items');
-      const currencySelect = document.getElementById('currency');
-      const selectedCurrency = currencySelect ? currencySelect.value : 'LRD';
+      const summaryCurrencySelect = document.getElementById('summary-currency');
+      const selectedCurrency = summaryCurrencySelect ? summaryCurrencySelect.value : 'LRD';
       let total = 0;
 
       console.log('Display order summary. Selected currency:', selectedCurrency);
@@ -619,13 +620,16 @@
       console.log('Total:', selectedCurrency, total);
     }
 
+    // Update order summary when currency changes
+    function updateOrderSummary() {
+      displayOrderSummary();
+    }
+
     // Convert price based on exchange rate
     function convertPrice(price, fromCurrency, toCurrency) {
       if (fromCurrency === toCurrency) return price;
 
       const exchangeRate = currentExchangeRate || 200; // Default 200 LRD = 1 USD
-
-      console.log(`Converting ${price} from ${fromCurrency} to ${toCurrency} at rate ${exchangeRate}`);
 
       if (fromCurrency === 'LRD' && toCurrency === 'USD') {
         return price / exchangeRate;
@@ -724,12 +728,6 @@
         hasError = true;
       }
 
-      const currency = document.getElementById('currency').value;
-      if (!currency) {
-        document.getElementById('currency').classList.add('error');
-        hasError = true;
-      }
-
       if (hasError) return;
 
       // Create booking directly (testing mode - no payment)
@@ -738,16 +736,20 @@
       submitBtn.textContent = 'Processing Booking...';
 
       try {
+        // Get selected currency from order summary
+        const summaryCurrencySelect = document.getElementById('summary-currency');
+        const selectedCurrency = summaryCurrencySelect ? summaryCurrencySelect.value : 'LRD';
+
         // Convert prices based on selected currency
         const convertedItems = checkoutData.items.map(item => {
           let price = item.price_per_ticket;
-          if (item.currency !== currency) {
-            price = convertPrice(price, item.currency, currency);
+          if (item.currency !== selectedCurrency) {
+            price = convertPrice(price, item.currency, selectedCurrency);
           }
           return {
             ...item,
             price_per_ticket: price,
-            currency: currency
+            currency: selectedCurrency
           };
         });
 
@@ -763,7 +765,7 @@
           customer_phone: phone,
           delivery_method: 'email',
           items: convertedItems,
-          currency: currency,
+          currency: selectedCurrency,
           seat_selections: checkoutData.seat_selections || [],
           payment_status: 'paid', // Testing mode
           payment_reference: 'TEST-' + Date.now()
@@ -809,10 +811,9 @@
       const checkoutData = {
         full_name: document.getElementById('full_name').value,
         email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        delivery_method: document.getElementById('delivery_method').value
+        phone: document.getElementById('phone').value
       };
-      sessionStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+      sessionStorage.setItem('savedCheckoutData', JSON.stringify(checkoutData));
 
       // Redirect back to seat selection
       window.location.href = '/index.html?stage=seat-selection';
@@ -881,19 +882,6 @@
     loadExchangeRate();
     loadCheckoutData();
     checkAuth();
-
-    // Update order summary when currency changes
-    setTimeout(() => {
-      const currencySelect = document.getElementById('currency');
-      if (currencySelect) {
-        currencySelect.addEventListener('change', function() {
-          console.log('Currency changed to:', this.value);
-          displayOrderSummary();
-        });
-        // Trigger initial display after element is ready
-        displayOrderSummary();
-      }
-    }, 300);
   </script>
 </body>
 </html>
