@@ -1,6 +1,11 @@
 # Enable rewrite engine
 RewriteEngine On
 
+# API endpoints - admin unified endpoint first
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/admin/(.*)$ api/admin.php [L,QSA]
+
 # Rewrite /api/* to api/*.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
