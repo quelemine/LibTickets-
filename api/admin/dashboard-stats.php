@@ -25,36 +25,36 @@ try {
     // Get stats
     $stats = [];
 
-    // Total events
+    // Total events (JavaScript expects 'events')
     try {
         $stmt = $db->query("SELECT COUNT(*) as count FROM events WHERE status = 'published'");
-        $stats['total_events'] = (int)$stmt->fetch()['count'];
+        $stats['events'] = (int)$stmt->fetch()['count'];
     } catch (Exception $e) {
-        $stats['total_events'] = 0;
+        $stats['events'] = 0;
     }
 
-    // Total bookings
+    // Total bookings (JavaScript expects 'bookings')
     try {
         $stmt = $db->query("SELECT COUNT(*) as count FROM bookings WHERE status = 'confirmed'");
-        $stats['total_bookings'] = (int)$stmt->fetch()['count'];
+        $stats['bookings'] = (int)$stmt->fetch()['count'];
     } catch (Exception $e) {
-        $stats['total_bookings'] = 0;
+        $stats['bookings'] = 0;
     }
 
-    // Total tickets sold
+    // Total tickets sold (JavaScript expects 'ticketsSold')
     try {
         $stmt = $db->query("SELECT COUNT(*) as count FROM tickets WHERE status = 'valid'");
-        $stats['tickets_sold'] = (int)$stmt->fetch()['count'];
+        $stats['ticketsSold'] = (int)$stmt->fetch()['count'];
     } catch (Exception $e) {
-        $stats['tickets_sold'] = 0;
+        $stats['ticketsSold'] = 0;
     }
 
-    // Total tickets left (available quantity from ticket types)
+    // Total tickets left (JavaScript expects 'ticketsLeft')
     try {
         $stmt = $db->query("SELECT COALESCE(SUM(available_quantity), 0) as total FROM ticket_types");
-        $stats['tickets_left'] = (int)$stmt->fetch()['total'];
+        $stats['ticketsLeft'] = (int)$stmt->fetch()['total'];
     } catch (Exception $e) {
-        $stats['tickets_left'] = 0;
+        $stats['ticketsLeft'] = 0;
     }
 
     // Total users
