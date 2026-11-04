@@ -221,6 +221,20 @@
                 padding: 10px 16px;
                 font-size: 13px;
             }
+            .btn-ticket-action {
+                background: #002059;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+                padding: 12px 16px;
+                margin: 5px 0;
+                touch-action: manipulation;
+            }
+            .btn-email {
+                background: #002059;
+            }
         }
 
         @media (max-width: 480px) {
@@ -438,6 +452,25 @@
         .navigation-buttons .btn {
             width: 100%;
             margin: 0;
+        }
+        .ticket-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .btn-ticket-action {
+            background: #002059;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 8px 16px;
+            touch-action: manipulation;
+        }
+        .btn-email {
+            background: #002059;
         }
         .loading {
             text-align: center;
@@ -701,12 +734,12 @@
 
                         // Add action buttons below each ticket
                         const ticketActions = document.createElement('div');
-                        ticketActions.style.cssText = 'display: flex; gap: 10px; justify-content: center; margin-top: 15px;';
+                        ticketActions.className = 'ticket-actions';
                         ticketActions.innerHTML = `
-                            <button onclick="printTicket('${ticket.ticket_code}')" style="padding: 8px 16px; background: #002059; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                            <button onclick="printTicket('${ticket.ticket_code}')" class="btn-ticket-action">
                                 🖨️ Print This Ticket
                             </button>
-                            <button onclick="sendTicketToEmail('${ticket.ticket_code}', '${item.event_title}')" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                            <button onclick="sendTicketToEmail('${ticket.ticket_code}', '${item.event_title}')" class="btn-ticket-action btn-email">
                                 📧 Email This Ticket
                             </button>
                         `;
