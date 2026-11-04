@@ -119,6 +119,46 @@ try {
         exit;
     }
 
+    // GET - Return single event with ticket types
+    if ($method === 'GET' && $eventId) {
+        $stmt = $db->prepare("
+            SELECT e.*,
+                   v.name as venue_name,
+                   c.name as city_name,
+                   cat.name as category_name,
+                   (SELECT COUNT(*) FROM bookings b JOIN booking_items bi ON b.id = bi.booking_id WHERE bi.ticket_type_id IN (SELECT id FROM ticket_types WHERE event_id = e.id) AND b.status = 'confirmed') as bookings_count,
+                   (SELECT COUNT(*) FROM tickets t JOIN booking_items bi ON t.booking_item_id = bi.id JOIN ticket_types tt ON bi.ticket_type_id = tt.id WHERE tt.event_id = e.id AND t.status = 'valid') as tickets_sold,
+                   (SELECT COALESCE(SUM(available_quantity), 0) FROM ticket_types WHERE event_id = e.id) as tickets_left
+            FROM events e
+            LEFT JOIN venues v ON e.venue_id = v.id
+            LEFT JOIN cities c ON v.city_id = c.id
+            LEFT JOIN categories cat ON e.category_id = cat.id
+            WHERE e.id = ?
+        ");
+        $stmt->execute([$eventId]);
+        $event = $stmt->fetch();
+
+        if (!$event) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Event not found']);
+            exit;
+        }
+
+        // Get ticket types for this event
+        $stmt = $db->prepare("SELECT * FROM ticket_types WHERE event_id = ? ORDER BY price ASC");
+        $stmt->execute([$eventId]);
+        $ticketTypes = $stmt->fetchAll();
+
+        $event['id'] = (int)$event['id'];
+        $event['bookings_count'] = (int)$event['bookings_count'];
+        $event['tickets_sold'] = (int)$event['tickets_sold'];
+        $event['tickets_left'] = (int)$event['tickets_left'];
+        $event['ticket_types'] = $ticketTypes;
+
+        echo json_encode($event);
+        exit;
+    }
+
     http_response_code(404);
     echo json_encode(['error' => 'Endpoint not found']);
 

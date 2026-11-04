@@ -341,7 +341,7 @@ async function loadDashboardStats() {
 // Load dashboard events table
 async function loadDashboardEvents() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/events.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/events`);
     const events = await res.json();
 
     const tbody = document.getElementById('dashboard-events-table');
