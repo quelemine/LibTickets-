@@ -561,7 +561,10 @@
       if (data) {
         checkoutData = JSON.parse(data);
         displayEventInfo();
-        displayOrderSummary();
+        // Wait for currency element to be available before displaying order summary
+        setTimeout(() => {
+          displayOrderSummary();
+        }, 200);
       } else {
         // No checkout data, redirect to home
         window.location.href = 'index.html';
@@ -884,10 +887,13 @@
       const currencySelect = document.getElementById('currency');
       if (currencySelect) {
         currencySelect.addEventListener('change', function() {
+          console.log('Currency changed to:', this.value);
           displayOrderSummary();
         });
+        // Trigger initial display after element is ready
+        displayOrderSummary();
       }
-    }, 100);
+    }, 300);
   </script>
 </body>
 </html>
