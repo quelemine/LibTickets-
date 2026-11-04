@@ -922,11 +922,11 @@ async function loadActivityLog() {
     tbody.innerHTML = logs.map(log => `
       <tr>
         <td>${new Date(log.created_at).toLocaleString()}</td>
-        <td>${log.admin_email}</td>
-        <td>${log.action}</td>
-        <td>${log.entity_type || '-'}</td>
-        <td>${log.description || '-'}</td>
-        <td>${log.ip_address || '-'}</td>
+        <td>${log.customer_name || 'System'}</td>
+        <td>Booking</td>
+        <td>Booking #${log.booking_reference}</td>
+        <td>${log.ticket_count} ticket(s) for ${log.currency} ${log.total_amount.toLocaleString()}</td>
+        <td>${log.status}</td>
       </tr>
     `).join('');
   } catch (error) {

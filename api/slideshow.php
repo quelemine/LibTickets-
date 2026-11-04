@@ -32,9 +32,9 @@ try {
         ");
         
         // Insert default images with placeholder colors if table was just created
-        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('/images/highlight1.jpeg', 'Highlight 1', 1, 1)");
-        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('/images/highlight3.jpeg', 'Highlight 2', 2, 1)");
-        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('/images/highlight5.jpeg', 'Highlight 3', 3, 1)");
+        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('highlight1.jpeg', 'Highlight 1', 1, 1)");
+        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('highlight3.jpeg', 'Highlight 2', 2, 1)");
+        $pdo->query("INSERT INTO slideshow_images (image_url, title, order_num, active) VALUES ('highlight5.jpeg', 'Highlight 3', 3, 1)");
     }
 
     // Get all active slideshow images
@@ -50,6 +50,10 @@ try {
         $image['id'] = (int)$image['id'];
         $image['order_num'] = (int)$image['order_num'];
         $image['active'] = (bool)$image['active'];
+        // Ensure image_url is absolute
+        if (!preg_match('/^https?:\/\//', $image['image_url']) && !preg_match('/^\//', $image['image_url'])) {
+            $image['image_url'] = '/' . $image['image_url'];
+        }
     }
 
     echo json_encode($images);

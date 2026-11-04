@@ -1038,7 +1038,7 @@ async function loadSlideshowImages() {
       slideshowContainer.innerHTML = activeImages
         .map(
           (img, index) => `
-        <div class="slide ${index === 0 ? "active" : ""}" style="background-image: linear-gradient(rgba(0, 32, 91, 0.6), rgba(0, 32, 91, 0.6)), url('${img.image_url}');"></div>
+        <div class="slide ${index === 0 ? "active" : ""}" style="background-image: linear-gradient(rgba(0, 32, 91, 0.6), rgba(0, 32, 91, 0.6)), url('${API_BASE_URL}${img.image_url}');"></div>
       `,
         )
         .join("");
