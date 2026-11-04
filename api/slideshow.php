@@ -50,9 +50,12 @@ try {
         $image['id'] = (int)$image['id'];
         $image['order_num'] = (int)$image['order_num'];
         $image['active'] = (bool)$image['active'];
-        // Ensure image_url is absolute
-        if (!preg_match('/^https?:\/\//', $image['image_url']) && !preg_match('/^\//', $image['image_url'])) {
-            $image['image_url'] = '/' . $image['image_url'];
+        // Ensure image_url has proper path
+        if (!preg_match('/^https?:\/\//', $image['image_url'])) {
+            // If it doesn't start with / or images/, add images/ prefix
+            if (!preg_match('/^\/images\//', $image['image_url'])) {
+                $image['image_url'] = '/images/' . basename($image['image_url']);
+            }
         }
     }
 
