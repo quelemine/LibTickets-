@@ -97,7 +97,7 @@ async function loadAdminData() {
     const categories = await categoriesRes.json();
     populateCategorySelect(categories);
 
-    const venuesRes = await fetch(`${API_BASE_URL}/api/venues.php`);
+    const venuesRes = await fetch(`${API_BASE_URL}/api/admin/venues`);
     const venues = await venuesRes.json();
     populateVenueSelect(venues);
 
@@ -254,7 +254,7 @@ async function changePassword() {
 // Load admin logo
 async function loadAdminLogo() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/logo.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/logo`);
     const data = await res.json();
     const logoUrl = data.url;
 
@@ -326,7 +326,7 @@ async function loadCitiesForCounty(countyId) {
 // Load dashboard statistics
 async function loadDashboardStats() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/dashboard-stats.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/dashboard-stats`);
     const stats = await res.json();
 
     document.getElementById('stat-events').textContent = stats.events || 0;
@@ -880,7 +880,7 @@ async function deleteEvent(eventId) {
 // Load bookings
 async function loadBookings() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/bookings.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/bookings`);
     const bookings = await res.json();
 
     const tbody = document.getElementById('bookings-table-body');
@@ -910,7 +910,7 @@ async function loadBookings() {
 // Load activity log
 async function loadActivityLog() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/admin/activity-log.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/activity-log`);
     const logs = await res.json();
 
     const tbody = document.getElementById('activity-log-table-body');
@@ -1209,7 +1209,7 @@ async function saveVenue(event) {
 
 async function loadVenues() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/venues.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/venues`);
     const venues = await res.json();
 
     const tbody = document.getElementById('venues-table-body');
@@ -1233,7 +1233,7 @@ async function loadVenues() {
 
 async function editVenue(id) {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/venues.php/${id}`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/venues/${id}`);
     const venue = await res.json();
 
     document.getElementById('venue-form').classList.remove('hidden');
