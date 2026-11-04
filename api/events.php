@@ -5,6 +5,13 @@ ini_set('log_errors', 1);
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 try {
     $pdo = new PDO(
@@ -38,14 +45,19 @@ try {
 
     // If we have an event ID, return single event
     if ($eventId) {
-        $stmt = $pdo->prepare("SELECT e.*, v.name as venue_name, c.name as city_name, cat.name as category_name
-                              FROM events e
-                              LEFT JOIN venues v ON e.venue_id = v.id
-                              LEFT JOIN cities c ON v.city_id = c.id
-                              LEFT JOIN categories cat ON e.category_id = cat.id
-                              WHERE e.id = ?");
-        $stmt->execute([$eventId]);
-        $event = $stmt->fetch();
+        try {
+            $stmt = $pdo->prepare("SELECT e.*, v.name as venue_name, c.name as city_name, cat.name as category_name
+                                  FROM events e
+                                  LEFT JOIN venues v ON e.venue_id = v.id
+                                  LEFT JOIN cities c ON v.city_id = c.id
+                                  LEFT JOIN categories cat ON e.category_id = cat.id
+                                  WHERE e.id = ?");
+            $stmt->execute([$eventId]);
+            $event = $stmt->fetch();
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'Failed to fetch event', 'message' => $e->getMessage()]);
+            exit;
+        }
 
         if (!$event) {
             http_response_code(404);
@@ -80,21 +92,26 @@ try {
     // Get all events (list view)
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : null;
 
-    $query = "SELECT e.*, v.name as venue_name, c.name as city_name, cat.name as category_name,
-              (SELECT MIN(price) FROM ticket_types WHERE event_id = e.id) as min_price
-              FROM events e
-              LEFT JOIN venues v ON e.venue_id = v.id
-              LEFT JOIN cities c ON v.city_id = c.id
-              LEFT JOIN categories cat ON e.category_id = cat.id
-              WHERE e.status = 'published'
-              ORDER BY e.event_date ASC";
+    try {
+        $query = "SELECT e.*, v.name as venue_name, c.name as city_name, cat.name as category_name,
+                  (SELECT MIN(price) FROM ticket_types WHERE event_id = e.id) as min_price
+                  FROM events e
+                  LEFT JOIN venues v ON e.venue_id = v.id
+                  LEFT JOIN cities c ON v.city_id = c.id
+                  LEFT JOIN categories cat ON e.category_id = cat.id
+                  WHERE e.status = 'published'
+                  ORDER BY e.event_date ASC";
 
-    if ($limit) {
-        $query .= " LIMIT $limit";
+        if ($limit) {
+            $query .= " LIMIT $limit";
+        }
+
+        $stmt = $pdo->query($query);
+        $events = $stmt->fetchAll();
+    } catch (Exception $e) {
+        echo json_encode(['error' => 'Failed to fetch events', 'message' => $e->getMessage()]);
+        exit;
     }
-
-    $stmt = $pdo->query($query);
-    $events = $stmt->fetchAll();
 
     // Process events
     $eventsWithTickets = [];
