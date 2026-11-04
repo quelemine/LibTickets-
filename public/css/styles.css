@@ -1453,6 +1453,8 @@ body.dark-mode .quantity-selector input {
   left: 0;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
   z-index: 100;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar-header {
@@ -1534,6 +1536,7 @@ body.dark-mode .quantity-selector input {
   padding: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .sidebar-footer .sidebar-link {
