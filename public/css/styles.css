@@ -1448,15 +1448,11 @@ body.dark-mode .quantity-selector input {
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 100vh;
-  left: 0;
   top: 0;
+  bottom: 0;
+  left: 0;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
   z-index: 100;
-  overflow-y: auto;
-  overflow-x: hidden;
-  justify-content: flex-start;
-  max-height: 100vh;
 }
 
 .sidebar-header {
@@ -1483,12 +1479,12 @@ body.dark-mode .quantity-selector input {
 }
 
 .sidebar-nav {
-  flex: 1 1 auto;
+  flex: 1;
   padding: 1rem 0;
   overflow-y: auto;
   overflow-x: hidden;
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
   background: transparent;
   gap: 0.2rem;
 }
@@ -1538,7 +1534,6 @@ body.dark-mode .quantity-selector input {
   padding: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
 }
 
 .sidebar-footer .sidebar-link {
