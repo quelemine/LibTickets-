@@ -155,7 +155,35 @@
           <span>Booked</span>
         </div>
       </div>
-      <button onclick="proceedToCheckout()" class="btn-book" style="margin-top: 2rem;">Continue to Checkout</button>
+      <button onclick="proceedToCurrencySelection()" class="btn-book" style="margin-top: 2rem;">Continue to Currency Selection</button>
+    </div>
+  </div>
+
+  <!-- Currency Selection View (hidden by default) -->
+  <div id="currency-selection-view" class="hidden">
+    <div class="event-details">
+      <button onclick="goBackToSeatSelection()" class="btn-action" style="margin-bottom: 1rem;">← Back to Seat Selection</button>
+      <h2>Select Your Currency</h2>
+      <p style="color: #666; margin-bottom: 2rem;">Choose the currency you would like to pay in. Prices will be converted automatically.</p>
+
+      <div id="currency-summary" style="background: #f0f4ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="color: #002059; margin-bottom: 1rem;">Your Tickets</h3>
+        <div id="currency-tickets"></div>
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #002059; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem;">
+          <span>Total:</span>
+          <span id="currency-total">LRD 0</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 2rem;">
+        <label for="currency-select" style="display: block; margin-bottom: 0.5rem; color: #333; font-weight: 600; font-size: 0.9rem;">Select Currency</label>
+        <select id="currency-select" onchange="updateCurrencySummary()" style="width: 100%; padding: 0.875rem 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; background: white; cursor: pointer;">
+          <option value="LRD">Liberian Dollars (LRD)</option>
+          <option value="USD">US Dollars (USD)</option>
+        </select>
+      </div>
+
+      <button onclick="proceedToCheckout()" class="btn-book" style="width: 100%;">Continue to Checkout</button>
     </div>
   </div>
 

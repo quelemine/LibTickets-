@@ -18,6 +18,7 @@ let selectedTickets = {};
 let selectedSeats = [];
 let exchangeRate = 200; // Default demonstration rate
 let currentUser = null;
+let selectedCurrency = 'LRD';
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
@@ -527,6 +528,83 @@ function toggleSeatSelection(seatId) {
       : `${selectedSeats.length} seat(s) selected`;
 }
 
+// Proceed to currency selection
+function proceedToCurrencySelection() {
+  const items = Object.values(selectedTickets);
+
+  if (items.length === 0) {
+    alert("Please select at least one ticket");
+    return;
+  }
+
+  // Hide seat selection, show currency selection
+  document.getElementById("seat-selection-view").classList.add("hidden");
+  document.getElementById("currency-selection-view").classList.remove("hidden");
+
+  // Display currency summary
+  displayCurrencySummary();
+}
+
+// Display currency summary
+function displayCurrencySummary() {
+  const currencyTicketsDiv = document.getElementById("currency-tickets");
+  const currencySelect = document.getElementById("currency-select");
+  const selectedCurrency = currencySelect ? currencySelect.value : 'LRD';
+
+  // Set initial currency to match ticket currency
+  if (selectedTickets && Object.keys(selectedTickets).length > 0) {
+    const firstItem = Object.values(selectedTickets)[0];
+    if (currencySelect) {
+      currencySelect.value = firstItem.currency || 'LRD';
+    }
+  }
+
+  const currencyTicketsDivValue = currencySelect ? currencySelect.value : 'LRD';
+  let total = 0;
+
+  currencyTicketsDiv.innerHTML = Object.values(selectedTickets).map(item => {
+    let price = item.price;
+    let itemCurrency = item.currency;
+
+    // Convert currency if different from selected
+    if (itemCurrency !== currencyTicketsDivValue) {
+      price = convertPrice(price, itemCurrency, currencyTicketsDivValue);
+      itemCurrency = currencyTicketsDivValue;
+    }
+
+    const itemTotal = price * item.quantity;
+    total += itemTotal;
+    return `
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+        <span>${item.quantity} x Ticket</span>
+        <span>${itemCurrency} ${itemTotal.toLocaleString()}</span>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById("currency-total").textContent = `${currencyTicketsDivValue} ${total.toLocaleString()}`;
+}
+
+// Update currency summary when currency changes
+function updateCurrencySummary() {
+  displayCurrencySummary();
+}
+
+// Convert price based on exchange rate
+function convertPrice(price, fromCurrency, toCurrency) {
+  if (fromCurrency === toCurrency) return price;
+
+  const exchangeRateValue = exchangeRate || 200; // Default 200 LRD = 1 USD
+
+  if (fromCurrency === 'LRD' && toCurrency === 'USD') {
+    return price / exchangeRateValue;
+  } else if (fromCurrency === 'USD' && toCurrency === 'LRD') {
+    return price * exchangeRateValue;
+  }
+
+  return price;
+}
+
 // Proceed to checkout
 function proceedToCheckout() {
   const items = Object.values(selectedTickets);
@@ -536,10 +614,27 @@ function proceedToCheckout() {
     return;
   }
 
+  // Get selected currency
+  const currencySelect = document.getElementById("currency-select");
+  const selectedCurrencyValue = currencySelect ? currencySelect.value : 'LRD';
+
+  // Convert prices based on selected currency
+  const convertedItems = items.map(item => {
+    let price = item.price;
+    if (item.currency !== selectedCurrencyValue) {
+      price = convertPrice(price, item.currency, selectedCurrencyValue);
+    }
+    return {
+      ...item,
+      price: price,
+      currency: selectedCurrencyValue
+    };
+  });
+
   // Prepare checkout data
   const checkoutData = {
     event: currentEvent,
-    items: items.map(item => {
+    items: convertedItems.map(item => {
       const ticketType = currentEvent.ticket_types.find(tt => tt.id === item.ticket_type_id);
       return {
         ticket_type_id: item.ticket_type_id,
@@ -819,8 +914,14 @@ function goBack() {
 function goBackToEvent() {
   document.getElementById("checkout-view").classList.add("hidden");
   document.getElementById("seat-selection-view").classList.add("hidden");
+  document.getElementById("currency-selection-view").classList.add("hidden");
   document.getElementById("event-details-view").classList.remove("hidden");
   selectedSeats = [];
+}
+
+function goBackToSeatSelection() {
+  document.getElementById("currency-selection-view").classList.add("hidden");
+  document.getElementById("seat-selection-view").classList.remove("hidden");
 }
 
 function goHome() {
