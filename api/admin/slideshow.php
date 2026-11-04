@@ -46,22 +46,41 @@ try {
         $imageId = (int)$matches[1];
     }
     
+    // GET /api/admin/slideshow - Get all slideshow images
+    if ($method === 'GET' && !$imageId) {
+        try {
+            $stmt = $db->query("SELECT * FROM slideshow_images ORDER BY order_num ASC, id ASC");
+            $images = $stmt->fetchAll();
+
+            foreach ($images as &$image) {
+                $image['id'] = (int)$image['id'];
+                $image['order_num'] = (int)$image['order_num'];
+                $image['active'] = (int)$image['active'];
+            }
+
+            echo json_encode($images);
+        } catch (Exception $e) {
+            echo json_encode([]);
+        }
+        exit;
+    }
+
     // GET /api/admin/slideshow?id=X - Get single slideshow image
     if ($method === 'GET' && $imageId) {
         $stmt = $db->prepare("SELECT * FROM slideshow_images WHERE id = ?");
         $stmt->execute([$imageId]);
         $image = $stmt->fetch();
-        
+
         if (!$image) {
             http_response_code(404);
             echo json_encode(['error' => 'Image not found']);
             exit;
         }
-        
+
         $image['id'] = (int)$image['id'];
         $image['order_num'] = (int)$image['order_num'];
         $image['active'] = (int)$image['active'];
-        
+
         echo json_encode($image);
         exit;
     }
