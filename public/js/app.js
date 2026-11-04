@@ -1121,14 +1121,19 @@ async function loadSlideshowImages() {
     const res = await fetch(`${API_BASE_URL}/api/slideshow.php`);
     const images = await res.json();
 
+    console.log('Slideshow API response:', images);
+
     const slideshowContainer = document.getElementById("hero-slideshow");
     if (!slideshowContainer) return;
 
     // Filter only active images
-    const activeImages = images.filter((img) => img.active === 1);
+    const activeImages = images.filter((img) => img.active === true || img.active === 1);
+
+    console.log('Active images:', activeImages);
 
     if (activeImages.length === 0) {
       // Fallback to gradient slides if no images
+      console.log('No active images, using gradient fallback');
       slideshowContainer.innerHTML = `
         <div class="slide active" style="background: linear-gradient(135deg, #002059 0%, #003087 50%, #002059 100%);"></div>
         <div class="slide" style="background: linear-gradient(135deg, #c41e3a 0%, #8b0000 50%, #c41e3a 100%);"></div>
@@ -1136,10 +1141,11 @@ async function loadSlideshowImages() {
       `;
     } else {
       // Load images from database
+      console.log('Loading images with URLs:', activeImages.map(img => img.image_url));
       slideshowContainer.innerHTML = activeImages
         .map(
           (img, index) => `
-        <div class="slide ${index === 0 ? "active" : ""}" style="background-image: linear-gradient(rgba(0, 32, 91, 0.6), rgba(0, 32, 91, 0.6)), url('${API_BASE_URL}${img.image_url}');"></div>
+        <div class="slide ${index === 0 ? "active" : ""}" style="background-image: linear-gradient(rgba(0, 32, 91, 0.6), rgba(0, 32, 91, 0.6)), url('${img.image_url}');"></div>
       `,
         )
         .join("");

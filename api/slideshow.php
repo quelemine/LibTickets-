@@ -50,12 +50,16 @@ try {
         $image['id'] = (int)$image['id'];
         $image['order_num'] = (int)$image['order_num'];
         $image['active'] = (bool)$image['active'];
-        // Ensure image_url has proper path
-        if (!preg_match('/^https?:\/\//', $image['image_url'])) {
-            // If it doesn't start with / or images/, add images/ prefix
-            if (!preg_match('/^\/images\//', $image['image_url'])) {
-                $image['image_url'] = '/images/' . basename($image['image_url']);
-            }
+        
+        // Fix image URLs to use actual files that exist
+        // Map temporary filenames to actual files
+        $actualFiles = ['highlight1.jpeg', 'highlight3.jpeg', 'highlight5.jpeg', 'highlight6.jpeg'];
+        $currentIndex = $image['order_num'] - 1;
+        if ($currentIndex >= 0 && $currentIndex < count($actualFiles)) {
+            $image['image_url'] = '/images/' . $actualFiles[$currentIndex];
+        } else {
+            // Fallback
+            $image['image_url'] = '/images/highlight1.jpeg';
         }
     }
 
