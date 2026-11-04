@@ -21,30 +21,63 @@ function getDb() {
 
 try {
     $db = getDb();
-    
+
     // Get stats
     $stats = [];
-    
+
     // Total events
-    $stmt = $db->query("SELECT COUNT(*) as count FROM events");
-    $stats['total_events'] = (int)$stmt->fetch()['count'];
-    
+    try {
+        $stmt = $db->query("SELECT COUNT(*) as count FROM events WHERE status = 'published'");
+        $stats['total_events'] = (int)$stmt->fetch()['count'];
+    } catch (Exception $e) {
+        $stats['total_events'] = 0;
+    }
+
     // Total bookings
-    $stmt = $db->query("SELECT COUNT(*) as count FROM bookings");
-    $stats['total_bookings'] = (int)$stmt->fetch()['count'];
-    
+    try {
+        $stmt = $db->query("SELECT COUNT(*) as count FROM bookings WHERE status = 'confirmed'");
+        $stats['total_bookings'] = (int)$stmt->fetch()['count'];
+    } catch (Exception $e) {
+        $stats['total_bookings'] = 0;
+    }
+
+    // Total tickets sold
+    try {
+        $stmt = $db->query("SELECT COUNT(*) as count FROM tickets WHERE status = 'valid'");
+        $stats['tickets_sold'] = (int)$stmt->fetch()['count'];
+    } catch (Exception $e) {
+        $stats['tickets_sold'] = 0;
+    }
+
+    // Total tickets left (available quantity from ticket types)
+    try {
+        $stmt = $db->query("SELECT COALESCE(SUM(available_quantity), 0) as total FROM ticket_types");
+        $stats['tickets_left'] = (int)$stmt->fetch()['total'];
+    } catch (Exception $e) {
+        $stats['tickets_left'] = 0;
+    }
+
     // Total users
-    $stmt = $db->query("SELECT COUNT(*) as count FROM users");
-    $stats['total_users'] = (int)$stmt->fetch()['count'];
-    
+    try {
+        $stmt = $db->query("SELECT COUNT(*) as count FROM users");
+        $stats['total_users'] = (int)$stmt->fetch()['count'];
+    } catch (Exception $e) {
+        $stats['total_users'] = 0;
+    }
+
     // Total revenue
-    $stmt = $db->query("SELECT COALESCE(SUM(total_amount), 0) as total FROM bookings WHERE status = 'confirmed'");
-    $stats['total_revenue'] = (float)$stmt->fetch()['total'];
-    
+    try {
+        $stmt = $db->query("SELECT COALESCE(SUM(total_amount), 0) as total FROM bookings WHERE status = 'confirmed'");
+        $stats['total_revenue'] = (float)$stmt->fetch()['total'];
+    } catch (Exception $e) {
+        $stats['total_revenue'] = 0;
+    }
+
     echo json_encode($stats);
-    
+
 } catch (Exception $e) {
     http_response_code(500);
+    error_log("Dashboard Stats Error: " . $e->getMessage());
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>

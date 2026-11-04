@@ -90,11 +90,41 @@ try {
         exit;
     }
     
+    // GET - Return all events with ticket info
+    if ($method === 'GET' && !$eventId) {
+        $stmt = $db->query("
+            SELECT e.*,
+                   v.name as venue_name,
+                   c.name as city_name,
+                   cat.name as category_name,
+                   (SELECT COUNT(*) FROM bookings b JOIN booking_items bi ON b.id = bi.booking_id WHERE bi.ticket_type_id IN (SELECT id FROM ticket_types WHERE event_id = e.id) AND b.status = 'confirmed') as bookings_count,
+                   (SELECT COUNT(*) FROM tickets t JOIN booking_items bi ON t.booking_item_id = bi.id JOIN ticket_types tt ON bi.ticket_type_id = tt.id WHERE tt.event_id = e.id AND t.status = 'valid') as tickets_sold,
+                   (SELECT COALESCE(SUM(available_quantity), 0) FROM ticket_types WHERE event_id = e.id) as tickets_left
+            FROM events e
+            LEFT JOIN venues v ON e.venue_id = v.id
+            LEFT JOIN cities c ON v.city_id = c.id
+            LEFT JOIN categories cat ON e.category_id = cat.id
+            ORDER BY e.event_date DESC
+        ");
+        $events = $stmt->fetchAll();
+
+        foreach ($events as &$event) {
+            $event['id'] = (int)$event['id'];
+            $event['bookings_count'] = (int)$event['bookings_count'];
+            $event['tickets_sold'] = (int)$event['tickets_sold'];
+            $event['tickets_left'] = (int)$event['tickets_left'];
+        }
+
+        echo json_encode($events);
+        exit;
+    }
+
     http_response_code(404);
     echo json_encode(['error' => 'Endpoint not found']);
-    
+
 } catch (Exception $e) {
     http_response_code(500);
+    error_log("Admin Events API Error: " . $e->getMessage());
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
