@@ -341,23 +341,19 @@ async function loadDashboardStats() {
 // Load dashboard events table
 async function loadDashboardEvents() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/events.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/events.php`);
     const events = await res.json();
 
     const tbody = document.getElementById('dashboard-events-table');
     tbody.innerHTML = events.map(event => {
-      const tiers = event.ticket_types ? event.ticket_types.length : 0;
-      const available = event.ticket_types ?
-        event.ticket_types.reduce((sum, tt) => sum + tt.available_quantity, 0) : 0;
-
       return `
         <tr>
           <td>${event.title}</td>
           <td>${event.venue_name || 'N/A'}</td>
-          <td>${event.county_name || 'N/A'}</td>
+          <td>${event.city_name || 'N/A'}</td>
           <td>${new Date(event.event_date).toLocaleDateString()}</td>
-          <td>${tiers}</td>
-          <td>${available}</td>
+          <td>${event.bookings_count || 0}</td>
+          <td>${event.tickets_left || 0}</td>
         </tr>
       `;
     }).join('');
