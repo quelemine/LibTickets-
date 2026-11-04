@@ -1445,7 +1445,7 @@ async function saveSlideshowImage(event) {
 
 async function loadSlideshowImages() {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/slideshow.php`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/slideshow.php`);
     const images = await res.json();
 
     const tbody = document.getElementById('slideshow-table-body');
