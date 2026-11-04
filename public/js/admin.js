@@ -686,7 +686,7 @@ function hideEventForm() {
 async function editEvent(eventId) {
   console.log('Editing event:', eventId);
   try {
-    const res = await fetch(`${API_BASE_URL}/api/events.php/${eventId}`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/events/${eventId}`);
     const event = await res.json();
 
     console.log('Event data:', event);
@@ -704,9 +704,8 @@ async function editEvent(eventId) {
     document.getElementById('event-image').value = event.image_url || '';
     document.getElementById('event-status').value = event.status || 'published';
 
-    // Load ticket types for this event
-    const ticketTypesRes = await fetch(`${API_BASE_URL}/api/ticket-types.php?event_id=${eventId}`);
-    const ticketTypes = await ticketTypesRes.json();
+    // Load ticket types for this event (already included in event data from admin API)
+    const ticketTypes = event.ticket_types || [];
 
     const container = document.getElementById('ticket-tiers-container');
     if (ticketTypes.length > 0) {
