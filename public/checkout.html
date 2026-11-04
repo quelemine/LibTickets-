@@ -582,17 +582,24 @@
       if (!checkoutData || !checkoutData.items) return;
 
       const orderItemsDiv = document.getElementById('order-items');
-      const selectedCurrency = document.getElementById('currency').value;
+      const currencySelect = document.getElementById('currency');
+      const selectedCurrency = currencySelect ? currencySelect.value : 'LRD';
       let total = 0;
+
+      console.log('Display order summary. Selected currency:', selectedCurrency);
+      console.log('Checkout items:', checkoutData.items);
 
       orderItemsDiv.innerHTML = checkoutData.items.map(item => {
         let price = item.price_per_ticket;
         let itemCurrency = item.currency;
 
+        console.log(`Item: ${item.ticket_name}, Original: ${itemCurrency} ${price}`);
+
         // Convert currency if different from selected
         if (itemCurrency !== selectedCurrency) {
           price = convertPrice(price, itemCurrency, selectedCurrency);
           itemCurrency = selectedCurrency;
+          console.log(`Converted to: ${itemCurrency} ${price}`);
         }
 
         const itemTotal = price * item.quantity;
@@ -606,6 +613,7 @@
       }).join('');
 
       document.getElementById('order-total').textContent = `${selectedCurrency} ${total.toLocaleString()}`;
+      console.log('Total:', selectedCurrency, total);
     }
 
     // Convert price based on exchange rate
@@ -613,6 +621,8 @@
       if (fromCurrency === toCurrency) return price;
 
       const exchangeRate = currentExchangeRate || 200; // Default 200 LRD = 1 USD
+
+      console.log(`Converting ${price} from ${fromCurrency} to ${toCurrency} at rate ${exchangeRate}`);
 
       if (fromCurrency === 'LRD' && toCurrency === 'USD') {
         return price / exchangeRate;
@@ -870,9 +880,14 @@
     checkAuth();
 
     // Update order summary when currency changes
-    document.getElementById('currency').addEventListener('change', function() {
-      displayOrderSummary();
-    });
+    setTimeout(() => {
+      const currencySelect = document.getElementById('currency');
+      if (currencySelect) {
+        currencySelect.addEventListener('change', function() {
+          displayOrderSummary();
+        });
+      }
+    }, 100);
   </script>
 </body>
 </html>
