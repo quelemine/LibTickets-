@@ -6,6 +6,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Help Center - LibTickets</title>
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .faq-accordion {
+      margin-bottom: 2rem;
+    }
+
+    .faq-item {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .faq-question:hover {
+      background: #e9ecef;
+    }
+
+    .faq-icon {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-right: 1rem;
+      color: #002059;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-question.active .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-question h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+      flex: 1;
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      display: none;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .faq-answer.show {
+      display: block;
+    }
+
+    .faq-answer p {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -65,55 +126,118 @@
       <div class="about-container">
         <div class="about-content">
           <h2>Getting Started</h2>
-          <div class="faq-item">
-            <h3>How do I create an account?</h3>
-            <p>Click "Sign up" in the top right corner of our website. Fill in your name, email, and password to create your account.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How do I find events?</h3>
-            <p>Browse our homepage for featured events, or visit the Concerts, Sports, or Conferences pages to filter by category.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How do I purchase tickets?</h3>
-            <p>Select an event, choose your ticket type and quantity, and proceed to checkout. You can pay using LRD or USD.</p>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do I create an account?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Click "Sign up" in the top right corner of our website. Fill in your name, email, and password to create your account.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do I find events?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Browse our homepage for featured events, or visit the Concerts, Sports, or Conferences pages to filter by category.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do I purchase tickets?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Select an event, choose your ticket type and quantity, and proceed to checkout. You can pay using LRD or USD.</p>
+              </div>
+            </div>
           </div>
 
           <h2>Ticket Management</h2>
-          <div class="faq-item">
-            <h3>Where can I find my purchased tickets?</h3>
-            <p>Your tickets are sent to your email after purchase. You can also view them in your account dashboard.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How do I use my ticket at an event?</h3>
-            <p>Show your QR code at the event entrance. Our staff will scan it to validate your ticket.</p>
-          </div>
-          <div class="faq-item">
-            <h3>Can I transfer my ticket to someone else?</h3>
-            <p>Tickets are non-transferable unless specified by the event organizer. Contact support for special requests.</p>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>Where can I find my purchased tickets?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Your tickets are sent to your email after purchase. You can also view them in your account dashboard.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do I use my ticket at an event?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Show your QR code at the event entrance. Our staff will scan it to validate your ticket.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>Can I transfer my ticket to someone else?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Tickets are non-transferable unless specified by the event organizer. Contact support for special requests.</p>
+              </div>
+            </div>
           </div>
 
           <h2>Payments & Refunds</h2>
-          <div class="faq-item">
-            <h3>What payment methods do you accept?</h3>
-            <p>We accept mobile money, bank transfers, and cash payments at designated locations.</p>
-          </div>
-          <div class="faq-item">
-            <h3>What is your refund policy?</h3>
-            <p>Refund policies vary by event. Please check the event details or contact support for specific refund information.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How do currency conversions work?</h3>
-            <p>We display prices in both LRD and USD. The exchange rate is set by the platform and updated regularly.</p>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>What payment methods do you accept?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>We accept mobile money, bank transfers, and cash payments at designated locations.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>What is your refund policy?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Refund policies vary by event. Please check the event details or contact support for specific refund information.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do currency conversions work?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>We display prices in both LRD and USD. The exchange rate is set by the platform and updated regularly.</p>
+              </div>
+            </div>
           </div>
 
           <h2>Account Issues</h2>
-          <div class="faq-item">
-            <h3>I forgot my password. What should I do?</h3>
-            <p>Click "Log in" and select "Forgot password" to reset your password via email.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How do I update my profile information?</h3>
-            <p>Log in to your account and navigate to the profile section to update your personal information.</p>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>I forgot my password. What should I do?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Click "Log in" and select "Forgot password" to reset your password via email.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span class="faq-icon">+</span>
+                <h3>How do I update my profile information?</h3>
+              </div>
+              <div class="faq-answer">
+                <p>Log in to your account and navigate to the profile section to update your personal information.</p>
+              </div>
+            </div>
           </div>
 
           <h2>Still Need Help?</h2>
@@ -176,10 +300,34 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 LibTickets. All rights reserved. | Events • Tickets • Liberia</p>
+      <p>ï¿½ 2026 LibTickets. All rights reserved. | Events ï¿½ Tickets ï¿½ Liberia</p>
     </div>
   </footer>
 
   <script src="js/app.js"></script>
+  <script>
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const icon = element.querySelector('.faq-icon');
+      
+      if (answer.classList.contains('show')) {
+        answer.classList.remove('show');
+        element.classList.remove('active');
+        icon.textContent = '+';
+      } else {
+        // Close all other answers
+        document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
+        document.querySelectorAll('.faq-question').forEach(q => {
+          q.classList.remove('active');
+          q.querySelector('.faq-icon').textContent = '+';
+        });
+        
+        // Open this answer
+        answer.classList.add('show');
+        element.classList.add('active');
+        icon.textContent = 'âˆ’';
+      }
+    }
+  </script>
 </body>
 </html>
