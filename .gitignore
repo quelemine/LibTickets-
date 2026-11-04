@@ -45,7 +45,6 @@ build/
 # Database backups
 *.sql
 *.db
-*.sqlite
 
 # User uploads
 uploads/
