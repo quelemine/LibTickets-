@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibTickets - Event Ticket</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f0f0f0;
+      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .ticket-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .ticket {
+      width: 100%;
+      aspect-ratio: 2.5 / 1;
+      background: linear-gradient(135deg, #002059 0%, #003087 50%, #002059 100%);
+      border-radius: 12px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 32, 89, 0.3);
+      position: relative;
+    }
+
+    /* Geometric pattern overlay */
+    .ticket::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255, 255, 255, 0.03) 10px,
+          rgba(255, 255, 255, 0.03) 20px
+        );
+      pointer-events: none;
+    }
+
+    /* Left panel - Main information */
+    .ticket-left {
+      flex: 1;
+      background: #ffffff;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Right panel - Red strip with seating */
+    .ticket-right {
+      width: 120px;
+      background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .seating-section {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transform: rotate(180deg);
+    }
+
+    /* Ticket header */
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #002059;
+    }
+
+    .brand-logo span {
+      color: #dc2626;
+    }
+
+    .ticket-type {
+      background: #002059;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Event title */
+    .event-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #002059;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .venue-name {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Ticket details grid */
+    .ticket-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #002059;
+    }
+
+    /* QR Code section */
+    .qr-section {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: auto;
+    }
+
+    .qr-container {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border: 2px solid #002059;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+
+    .qr-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .qr-info {
+      flex: 1;
+    }
+
+    .qr-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .qr-status {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #10b981;
+    }
+
+    /* Ticket number */
+    .ticket-number {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .ticket-footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 2px dashed #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .support-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .support-icon {
+      color: #dc2626;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .ticket-container {
+        max-width: none;
+      }
+
+      .ticket {
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ticket {
+        aspect-ratio: auto;
+        flex-direction: column;
+      }
+
+      .ticket-left {
+        padding: 1.5rem;
+      }
+
+      .ticket-right {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+      }
+
+      .seating-section {
+        writing-mode: horizontal-tb;
+        transform: none;
+        font-size: 1rem;
+      }
+
+      .event-title {
+        font-size: 1.25rem;
+      }
+
+      .ticket-details {
+        grid-template-columns: 1fr;
+      }
+
+      .qr-section {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ticket-container">
+    <div class="ticket">
+      <!-- Left Panel - Main Information -->
+      <div class="ticket-left">
+        <div class="ticket-header">
+          <div class="brand-logo">Lib<span>Tickets</span></div>
+          <div class="ticket-type" id="ticket-type">VIP</div>
+        </div>
+
+        <div>
+          <h1 class="event-title" id="event-title">Football Match</h1>
+          <div class="venue-name" id="venue-name">National Stadium</div>
+        </div>
+
+        <div class="ticket-details">
+          <div class="detail-item">
+            <span class="detail-label">Date</span>
+            <span class="detail-value" id="event-date">Dec 15, 2024</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Time</span>
+            <span class="detail-value" id="event-time">18:00</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Gate Opens</span>
+            <span class="detail-value" id="gate-open">16:00</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Entrance</span>
+            <span class="detail-value" id="entrance">Gate A</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Block</span>
+            <span class="detail-value" id="block">A</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Seat</span>
+            <span class="detail-value" id="seat">12</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Price</span>
+            <span class="detail-value" id="price">$50.00</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Holder</span>
+            <span class="detail-value" id="holder">John Doe</span>
+          </div>
+        </div>
+
+        <div class="qr-section">
+          <div class="qr-container">
+            <img id="qr-code" src="" alt="QR Code">
+          </div>
+          <div class="qr-info">
+            <div class="qr-label">Scan to Validate</div>
+            <div class="qr-status" id="ticket-status">Valid</div>
+            <div class="ticket-number" id="ticket-number">TKT-2024-XXXXX</div>
+          </div>
+        </div>
+
+        <div class="ticket-footer">
+          <div class="support-info">
+            <span class="support-icon">??</span>
+            <span>+231777683875</span>
+          </div>
+          <div>www.libtickets.com</div>
+        </div>
+      </div>
+
+      <!-- Right Panel - Seating Section -->
+      <div class="ticket-right">
+        <div class="seating-section" id="seating-section">LOWER BOWL</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // This template will be populated dynamically by the application
+    // The data will be injected via URL parameters or API response
+  </script>
+</body>
+</html>

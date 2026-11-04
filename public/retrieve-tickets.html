@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retrieve Your Tickets - LibTickets</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .retrieve-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 32, 89, 0.15);
+      max-width: 600px;
+      width: 100%;
+      padding: 3rem;
+    }
+
+    .retrieve-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .retrieve-header h1 {
+      color: #002059;
+      margin-bottom: 0.5rem;
+    }
+
+    .retrieve-header p {
+      color: #666;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #002059;
+    }
+
+    .btn-retrieve {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #002059 0%, #003087 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-retrieve:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 32, 89, 0.3);
+    }
+
+    .btn-retrieve:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .alert.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .alert.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #dc2626;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .tickets-section {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    .tickets-section.show {
+      display: block;
+    }
+
+    .ticket-card {
+      background: #f8f9fa;
+      border: 2px solid #002059;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .ticket-header {
+      background: linear-gradient(135deg, #002059 0%, #003087 100%);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ticket-header h4 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .ticket-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .ticket-status.valid {
+      background: #10b981;
+      color: white;
+    }
+
+    .ticket-status.used {
+      background: #6b7280;
+      color: white;
+    }
+
+    .ticket-body {
+      padding: 1.5rem;
+    }
+
+    .ticket-body p {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+
+    .ticket-body strong {
+      color: #002059;
+    }
+
+    .ticket-qr {
+      padding: 1.5rem;
+      border-top: 1px solid #e0e0e0;
+      text-align: center;
+    }
+
+    .qr-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .qr-modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .qr-modal-content img {
+      max-width: 100%;
+      margin: 1rem 0;
+    }
+
+    .qr-modal-content button {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="retrieve-container">
+    <div class="retrieve-header">
+      <h1>?? Retrieve Your Tickets</h1>
+      <p>Enter your booking reference and email to access your tickets</p>
+    </div>
+
+    <div id="alert-success" class="alert success"></div>
+    <div id="alert-error" class="alert error"></div>
+
+    <form id="retrieve-form">
+      <div class="form-group">
+        <label for="booking-reference">Booking Reference *</label>
+        <input type="text" id="booking-reference" placeholder="e.g., LIB-2024-XXXXX" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="Enter your email address" required>
+      </div>
+      <button type="submit" class="btn-retrieve" id="retrieve-btn">Retrieve Tickets</button>
+    </form>
+
+    <div class="tickets-section" id="tickets-section">
+      <h3 style="color: #002059; margin-bottom: 1rem;">Your Tickets</h3>
+      <div id="tickets-container"></div>
+    </div>
+  </div>
+
+  <!-- QR Modal -->
+  <div class="qr-modal" id="qr-modal" style="display: none;">
+    <div class="qr-modal-content">
+      <h3>Ticket QR Code</h3>
+      <div id="qr-image-container"></div>
+      <p id="qr-ticket-code"></p>
+      <button class="btn-retrieve" onclick="closeQRModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('retrieve-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const bookingReference = document.getElementById('booking-reference').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const retrieveBtn = document.getElementById('retrieve-btn');
+
+      // Validation
+      if (!bookingReference || !email) {
+        document.getElementById('alert-error').textContent = 'Please fill in all fields';
+        document.getElementById('alert-error').classList.add('show');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        document.getElementById('alert-error').textContent = 'Please enter a valid email address';
+        document.getElementById('alert-error').classList.add('show');
+        return;
+      }
+
+      retrieveBtn.disabled = true;
+      retrieveBtn.textContent = 'Retrieving...';
+
+      try {
+        const response = await fetch('/api/bookings/retrieve', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            booking_reference: bookingReference,
+            email: email
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to retrieve tickets');
+        }
+
+        // Hide form, show tickets
+        document.getElementById('retrieve-form').style.display = 'none';
+        document.getElementById('tickets-section').classList.add('show');
+
+        // Display tickets
+        displayTickets(data.tickets);
+      } catch (error) {
+        console.error('Retrieve error:', error);
+        document.getElementById('alert-error').textContent = error.message;
+        document.getElementById('alert-error').classList.add('show');
+        retrieveBtn.disabled = false;
+        retrieveBtn.textContent = 'Retrieve Tickets';
+      }
+    });
+
+    function displayTickets(tickets) {
+      const container = document.getElementById('tickets-container');
+      
+      if (tickets.length === 0) {
+        container.innerHTML = '<p>No tickets found for this booking.</p>';
+        return;
+      }
+
+      container.innerHTML = tickets.map(ticket => `
+        <div class="ticket-card">
+          <div class="ticket-header">
+            <h4>${ticket.event_title}</h4>
+            <span class="ticket-status ${ticket.status}">${ticket.status}</span>
+          </div>
+          <div class="ticket-body">
+            <p><strong>Ticket:</strong> ${ticket.ticket_name}</p>
+            <p><strong>Ticket Code:</strong> ${ticket.ticket_code}</p>
+            <p><strong>Date:</strong> ${new Date(ticket.event_date).toLocaleDateString()} ${ticket.event_time || ''}</p>
+            <p><strong>Venue:</strong> ${ticket.venue_name}</p>
+            ${ticket.seat_number ? `<p><strong>Seat:</strong> ${ticket.seat_number}</p>` : ''}
+          </div>
+          <div class="ticket-qr">
+            <button class="btn-retrieve" onclick="viewTicketQR('${ticket.qr_token}', '${ticket.ticket_code}')">View QR Code</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function viewTicketQR(qrToken, ticketCode) {
+      try {
+        const res = await fetch(`/api/tickets/qr/${encodeURIComponent(qrToken)}`);
+        const data = await res.json();
+
+        if (data.qr_code) {
+          document.getElementById('qr-image-container').innerHTML = `<img src="${data.qr_code}" alt="QR Code">`;
+          document.getElementById('qr-ticket-code').textContent = `Ticket Code: ${ticketCode}`;
+          document.getElementById('qr-modal').style.display = 'flex';
+        } else if (data.error) {
+          alert('Error: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error loading QR code:', error);
+        alert('Error loading QR code. Please try again.');
+      }
+    }
+
+    function closeQRModal() {
+      document.getElementById('qr-modal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

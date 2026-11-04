@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers - LibTickets</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+  <base href="/">
+  <div class="header-content">
+      <a href="./" class="logo">
+        <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="logo-image">
+      </a>
+      <nav id="main-nav">
+        <a href="/">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+        <a href="#" class="btn-login-nav" onclick="showLoginModal()">Log in</a>
+        <a href="#" class="btn-signup" onclick="showSignupModal()">Sign up</a>
+      </nav>
+      <div class="social-links-nav">
+        <a href="https://facebook.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="https://twitter.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+          </svg>
+        </a>
+        <a href="https://instagram.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+      <div class="right-controls">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+          <span class="dark-icon">??</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()">?</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1>Careers</h1>
+        <p>Join our team and help shape the future of events in Liberia</p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <div class="about-content">
+          <h2>Why Work With Us?</h2>
+          <p>At LibTickets, we're passionate about connecting people to unforgettable experiences. We're looking for talented individuals who share our vision and want to make a difference in Liberia's event industry.</p>
+          
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="value-icon">??</div>
+              <h3>Growth</h3>
+              <p>Continuous learning and career development opportunities</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">??</div>
+              <h3>Innovation</h3>
+              <p>Work with cutting-edge technology and creative solutions</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">??</div>
+              <h3>Collaboration</h3>
+              <p>Join a supportive and diverse team environment</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">??</div>
+              <h3>Impact</h3>
+              <p>Make a real difference in your community</p>
+            </div>
+          </div>
+
+          <h2>Open Positions</h2>
+          <div class="job-listing">
+            <div class="job-card">
+              <h3>Software Engineer</h3>
+              <p class="job-location">Monrovia, Liberia</p>
+              <p class="job-description">We're looking for a skilled software engineer to help build and improve our platform. Experience with JavaScript, Node.js, and web development is required.</p>
+              <button class="btn-book">Apply Now</button>
+            </div>
+            <div class="job-card">
+              <h3>Marketing Specialist</h3>
+              <p class="job-location">Monrovia, Liberia</p>
+              <p class="job-description">Join our marketing team to help promote events and grow our brand. Experience in digital marketing and social media management is preferred.</p>
+              <button class="btn-book">Apply Now</button>
+            </div>
+            <div class="job-card">
+              <h3>Customer Support Representative</h3>
+              <p class="job-location">Monrovia, Liberia</p>
+              <p class="job-description">Help our customers with ticket purchases and event inquiries. Excellent communication skills and a passion for helping others are essential.</p>
+              <button class="btn-book">Apply Now</button>
+            </div>
+            <div class="job-card">
+              <h3>Event Coordinator</h3>
+              <p class="job-location">Monrovia, Liberia</p>
+              <p class="job-description">Work with event organizers to ensure smooth event operations. Experience in event management and strong organizational skills are required.</p>
+              <button class="btn-book">Apply Now</button>
+            </div>
+          </div>
+
+          <h2>How to Apply</h2>
+          <p>To apply for any of our open positions, please send your resume and a cover letter to careers@libtickets.com with the job title in the subject line. We review all applications and will contact shortlisted candidates for interviews.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>LibTickets</h3>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="careers.html">Careers</a>
+      </div>
+      <div class="footer-section">
+        <h3>Events</h3>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+      </div>
+      <div class="footer-section">
+        <h3>Locations</h3>
+        <a href="locations.html">Monrovia</a>
+        <a href="locations.html">Paynesville</a>
+        <a href="locations.html">Gbarnga</a>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <a href="support.html">Support</a>
+        <a href="help-center.html">Help Center</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://facebook.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="https://twitter.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
+          <a href="https://instagram.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LibTickets. All rights reserved. | Events • Tickets • Liberia</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

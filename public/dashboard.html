@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - LibTickets</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <span class="logo-icon">??</span>
+          <span class="logo-text">LibTickets</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" onclick="showSection('overview')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('discover')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">Discover Events</span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('tickets')">
+          <span class="nav-icon">???</span>
+          <span class="nav-text">My Tickets</span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('bookings')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">My Bookings</span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('profile')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">My Profile</span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('notifications')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">Notifications</span>
+          <span class="notification-badge" id="notification-badge"></span>
+        </a>
+        <a href="#" class="nav-link" onclick="showSection('support')">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">Help & Support</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-link logout-link" onclick="logout()">
+          <span class="nav-icon">??</span>
+          <span class="nav-text">Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <!-- Top Bar -->
+      <header class="dashboard-topbar">
+  <base href="/">
+  <div class="topbar-left">
+          <h1 id="page-title">Dashboard</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="user-info">
+            <div class="user-avatar" id="user-avatar">
+              <span id="user-initials">U</span>
+            </div>
+            <div class="user-details">
+              <span class="user-name" id="user-name">User Name</span>
+              <span class="user-email" id="user-email">user@email.com</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <div class="dashboard-content">
+        <!-- Overview Section -->
+        <section id="section-overview" class="content-section active">
+          <div class="welcome-banner">
+            <h2>Welcome back, <span id="welcome-name">User</span>!</h2>
+            <p>Here's what's happening with your tickets and events</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">???</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-tickets">0</div>
+                <div class="stat-label">Total Tickets</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">??</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-bookings">0</div>
+                <div class="stat-label">Total Bookings</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">??</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-upcoming">0</div>
+                <div class="stat-label">Upcoming Events</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="dashboard-card">
+              <h3>Upcoming Events</h3>
+              <div id="upcoming-events-list" class="events-list">
+                <p class="no-data">No upcoming events</p>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <h3>Recent Bookings</h3>
+              <div id="recent-bookings-list" class="bookings-list">
+                <p class="no-data">No recent bookings</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Discover Events Section -->
+        <section id="section-discover" class="content-section hidden">
+          <div class="section-header">
+            <h2>Discover Events</h2>
+          </div>
+
+          <div class="search-filters">
+            <div class="filter-group">
+              <input type="text" id="event-search" placeholder="Search events...">
+            </div>
+            <div class="filter-group">
+              <select id="category-filter">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <select id="location-filter">
+                <option value="">All Locations</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <input type="date" id="date-filter">
+            </div>
+            <button class="btn-filter" onclick="filterEvents()">Search</button>
+          </div>
+
+          <div id="events-grid" class="events-grid">
+            <p class="no-data">Loading events...</p>
+          </div>
+        </section>
+
+        <!-- My Tickets Section -->
+        <section id="section-tickets" class="content-section hidden">
+          <div class="section-header">
+            <h2>My Tickets</h2>
+          </div>
+
+          <div id="tickets-list" class="tickets-list">
+            <p class="no-data">Loading tickets...</p>
+          </div>
+        </section>
+
+        <!-- My Bookings Section -->
+        <section id="section-bookings" class="content-section hidden">
+          <div class="section-header">
+            <h2>My Bookings</h2>
+          </div>
+
+          <div id="bookings-list" class="bookings-list">
+            <p class="no-data">Loading bookings...</p>
+          </div>
+        </section>
+
+        <!-- My Profile Section -->
+        <section id="section-profile" class="content-section hidden">
+          <div class="section-header">
+            <h2>My Profile</h2>
+          </div>
+
+          <div class="profile-container">
+            <div class="profile-card">
+              <div class="profile-header">
+                <div class="profile-avatar-large" id="profile-avatar-large">
+                  <span id="profile-initials-large">U</span>
+                </div>
+                <button class="btn-upload" onclick="document.getElementById('profile-picture-input').click()">
+                  Change Photo
+                </button>
+                <input type="file" id="profile-picture-input" accept="image/*" style="display: none;" onchange="uploadProfilePicture(event)">
+              </div>
+
+              <form id="profile-form" class="profile-form">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" id="profile-full-name" name="full_name">
+                </div>
+                <div class="form-group">
+                  <label>Email Address</label>
+                  <input type="email" id="profile-email" name="email">
+                </div>
+                <div class="form-group">
+                  <label>Phone Number</label>
+                  <input type="tel" id="profile-phone" name="phone">
+                </div>
+                <button type="submit" class="btn-save">Save Changes</button>
+              </form>
+            </div>
+
+            <div class="password-card">
+              <h3>Change Password</h3>
+              <form id="password-form" class="password-form">
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" id="current-password" name="current_password" required>
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" id="new-password" name="new_password" required>
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" id="confirm-password" name="confirm_password" required>
+                </div>
+                <button type="submit" class="btn-save">Change Password</button>
+              </form>
+            </div>
+
+            <div class="security-card">
+              <h3>Two-Factor Authentication</h3>
+              <div class="two-factor-status" id="two-factor-status">
+                <p id="two-factor-status-text">Loading...</p>
+              </div>
+              <div id="two-factor-actions">
+                <button type="button" class="btn-save" id="btn-enable-2fa" onclick="enableTwoFactor()">Enable 2FA</button>
+                <button type="button" class="btn-danger" id="btn-disable-2fa" onclick="disableTwoFactor()" style="display: none;">Disable 2FA</button>
+              </div>
+              <div id="two-factor-verify" style="display: none; margin-top: 1rem;">
+                <div class="form-group">
+                  <label>Enter Verification Code</label>
+                  <input type="text" id="two-factor-code" placeholder="Enter 6-digit code" maxlength="6">
+                </div>
+                <button type="button" class="btn-save" onclick="confirmTwoFactor()">Verify & Enable</button>
+                <button type="button" class="btn-cancel" onclick="cancelTwoFactor()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notifications Section -->
+        <section id="section-notifications" class="content-section hidden">
+          <div class="section-header">
+            <h2>Notifications</h2>
+            <button class="btn-mark-all-read" onclick="markAllAsRead()">Mark All as Read</button>
+          </div>
+
+          <div id="notifications-list" class="notifications-list">
+            <p class="no-data">Loading notifications...</p>
+          </div>
+        </section>
+
+        <!-- Help & Support Section -->
+        <section id="section-support" class="content-section hidden">
+          <div class="section-header">
+            <h2>Help & Support</h2>
+          </div>
+
+          <div class="support-card">
+            <div class="support-info">
+              <h3>Need Help?</h3>
+              <p>Our support team is here to assist you with any questions or issues you may have.</p>
+            </div>
+
+            <div class="support-contact">
+              <div class="contact-item">
+                <span class="contact-icon">??</span>
+                <div class="contact-details">
+                  <span class="contact-label">Support Number</span>
+                  <span class="contact-value">+231777683875</span>
+                </div>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">??</span>
+                <div class="contact-details">
+                  <span class="contact-label">Email Support</span>
+                  <span class="contact-value">support@libtickets.com</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="support-faq">
+              <h3>Frequently Asked Questions</h3>
+              <div class="faq-item">
+                <h4>How do I view my tickets?</h4>
+                <p>Go to the "My Tickets" section in your dashboard to view all your purchased tickets with QR codes.</p>
+              </div>
+              <div class="faq-item">
+                <h4>Can I cancel my booking?</h4>
+                <p>Bookings can be cancelled up to 24 hours before the event. Contact our support team for assistance.</p>
+              </div>
+              <div class="faq-item">
+                <h4>How do I get a refund?</h4>
+                <p>Refunds are processed within 5-7 business days. Please contact our support team to initiate a refund request.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

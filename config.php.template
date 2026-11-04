@@ -1,0 +1,33 @@
+# Database Configuration
+# Copy this file to config.php and fill in your actual credentials
+# DO NOT commit config.php to version control
+
+<?php
+// Database
+define('DB_HOST', 'your_host_here');
+define('DB_NAME', 'your_database_name');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');
+
+// FTP Configuration
+define('FTP_SERVER', 'your_ftp_server');
+define('FTP_USERNAME', 'your_ftp_username');
+define('FTP_PASSWORD', 'your_ftp_password');
+define('FTP_REMOTE_PATH', '/htdocs');
+
+// Payment Gateway (if using)
+define('FLUTTERWAVE_PUBLIC_KEY', 'your_public_key');
+define('FLUTTERWAVE_SECRET_KEY', 'your_secret_key');
+define('FLUTTERWAVE_ENCRYPTION_KEY', 'your_encryption_key');
+
+// Site Configuration
+define('SITE_URL', 'http://libtickets.gt.tc');
+define('SITE_NAME', 'LibTickets');
+
+// Email Configuration
+define('EMAIL_FROM', 'noreply@libtickets.gt.tc');
+define('EMAIL_REPLY_TO', 'support@libtickets.com');
+
+// Test Mode
+define('TEST_MODE', true);
+?>

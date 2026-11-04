@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - LibTickets</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="images/libtickets_logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+  <base href="/">
+  <div class="header-content">
+      <a href="./" class="logo">
+        <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="logo-image">
+      </a>
+      <nav id="main-nav">
+        <a href="/">Home</a>
+        <a href="about.html" class="active">About Us</a>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+        <a href="#" class="btn-login-nav" onclick="showLoginModal()">Log in</a>
+        <a href="#" class="btn-signup" onclick="showSignupModal()">Sign up</a>
+      </nav>
+      <div class="social-links-nav">
+        <a href="https://facebook.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="https://twitter.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+          </svg>
+        </a>
+        <a href="https://instagram.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+      <div class="right-controls">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+          <span class="dark-icon">??</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()">?</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="app">
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1>About LibTickets</h1>
+        <p>Liberia's premier event ticketing platform, connecting people to unforgettable experiences across the nation.</p>
+      </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="about-section">
+      <div class="about-container">
+        <div class="about-text">
+          <h2>Our Story</h2>
+          <p>Founded in 2024, LibTickets was born from a simple vision: to make event discovery and ticket booking accessible, seamless, and enjoyable for everyone in Liberia. We recognized the need for a modern, reliable platform that could bring together event organizers and attendees in one unified space.</p>
+          <p>What started as a small idea has grown into Liberia's leading event ticketing platform, serving thousands of users across all 15 counties. From concerts in Monrovia to sports events in Gbarnga, we're proud to be part of every memorable moment.</p>
+        </div>
+        <div class="about-image">
+          <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="about-logo-large">
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Mission -->
+    <section class="about-section about-section-alt">
+      <div class="about-container">
+        <div class="about-image">
+          <div class="mission-icon">??</div>
+        </div>
+        <div class="about-text">
+          <h2>Our Mission</h2>
+          <p>To revolutionize how Liberians experience events by providing a secure, user-friendly platform that connects communities through shared experiences. We believe that every event, big or small, deserves to be discovered and enjoyed.</p>
+          <p>We're committed to supporting local organizers, promoting cultural events, and making entertainment accessible to everyone, regardless of location or budget.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="about-section">
+      <div class="about-container">
+        <h2>Our Values</h2>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">??</div>
+            <h3>Community First</h3>
+            <p>We believe in building strong connections and supporting local communities through events.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">??</div>
+            <h3>Trust & Security</h3>
+            <p>Your security is our priority. We ensure safe transactions and protect your personal information.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">??</div>
+            <h3>Innovation</h3>
+            <p>We constantly improve our platform to provide the best experience for organizers and attendees.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">??</div>
+            <h3>Accessibility</h3>
+            <p>Events should be for everyone. We work to make ticket booking accessible across Liberia.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Team -->
+    <section class="about-section about-section-alt">
+      <div class="about-container">
+        <h2>Our Team</h2>
+        <p class="team-intro">Meet the passionate individuals behind LibTickets</p>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar">?????</div>
+            <h3>Founder & CEO</h3>
+            <p>Visionary leader with a passion for connecting communities through events.</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">?????</div>
+            <h3>Head of Technology</h3>
+            <p>Tech enthusiast ensuring our platform runs smoothly and securely.</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">?????</div>
+            <h3>Head of Operations</h3>
+            <p>Operations expert keeping everything organized and efficient.</p>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">?????</div>
+            <h3>Customer Success</h3>
+            <p>Dedicated to providing exceptional support to all our users.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="about-section">
+      <div class="about-container">
+        <h2>Get In Touch</h2>
+        <p class="contact-intro">Have questions or want to partner with us? We'd love to hear from you.</p>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <div class="contact-icon">??</div>
+            <h3>Email</h3>
+            <p>info@libtickets.com</p>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">??</div>
+            <h3>Phone</h3>
+            <p>+231 (XXX) XXX-XXXX</p>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">??</div>
+            <h3>Location</h3>
+            <p>Monrovia, Liberia</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>LibTickets</h3>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="careers.html">Careers</a>
+      </div>
+      <div class="footer-section">
+        <h3>Events</h3>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+      </div>
+      <div class="footer-section">
+        <h3>Locations</h3>
+        <a href="locations.html">Monrovia</a>
+        <a href="locations.html">Paynesville</a>
+        <a href="locations.html">Gbarnga</a>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <a href="support.html">Support</a>
+        <a href="help-center.html">Help Center</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://facebook.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="https://twitter.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
+          <a href="https://instagram.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p> 2026 LibTickets. All rights reserved. | Events • Tickets • Liberia</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

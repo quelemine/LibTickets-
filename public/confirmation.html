@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - LibTickets</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        @media print {
+            body {
+                background: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .confirmation-header {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: #48bb78;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 50px;
+            color: white;
+        }
+        .confirmation-header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .confirmation-header p {
+            color: #718096;
+            font-size: 16px;
+        }
+        .booking-details {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .booking-details h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            color: #718096;
+            font-weight: 500;
+        }
+        .detail-value {
+            color: #2d3748;
+            font-weight: 600;
+        }
+        .tickets-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .tickets-section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .ticket-inline {
+            width: 600px;
+            height: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 0 auto 20px auto;
+            display: flex;
+            position: relative;
+        }
+        .ticket-left {
+            width: 65%;
+            padding: 25px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .ticket-right {
+            width: 35%;
+            background: linear-gradient(135deg, #002059 0%, #003087 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 15px;
+            }
+            .tickets-section {
+                padding: 20px;
+            }
+            .ticket-inline {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                flex-direction: column;
+            }
+            .ticket-left {
+                width: 100%;
+                padding: 15px;
+            }
+            .ticket-right {
+                width: 100%;
+                padding: 15px;
+                min-height: 180px;
+            }
+            .event-title {
+                font-size: 16px !important;
+                line-height: 1.3;
+            }
+            .venue-info {
+                font-size: 11px !important;
+            }
+            .ticket-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .detail-label {
+                font-size: 8px !important;
+            }
+            .detail-value {
+                font-size: 10px !important;
+            }
+            .ticket-number {
+                font-size: 11px !important;
+            }
+            .qr-container {
+                padding: 10px;
+            }
+            .qr-container img {
+                width: 80px;
+                height: 80px;
+            }
+            .qr-label {
+                font-size: 8px !important;
+            }
+            .event-graphic h3 {
+                font-size: 8px !important;
+            }
+            .event-graphic p {
+                font-size: 7px !important;
+            }
+            .website {
+                font-size: 7px !important;
+            }
+            .ticket-type-strip {
+                font-size: 9px !important;
+                padding: 6px;
+            }
+            .ticket-actions button {
+                padding: 6px 12px !important;
+                font-size: 11px !important;
+            }
+            .actions-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .actions-section .btn {
+                width: 100%;
+                margin-bottom: 8px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            .delivery-section {
+                padding: 15px;
+            }
+            .delivery-section input {
+                width: 100%;
+            }
+            .ticket-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .ticket-actions button {
+                width: 100%;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confirmation-header h1 {
+                font-size: 24px;
+            }
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+            .ticket-details {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .ticket-left {
+                padding: 12px;
+            }
+            .ticket-right {
+                padding: 12px;
+                min-height: 160px;
+            }
+            .event-title {
+                font-size: 14px !important;
+            }
+            .detail-label {
+                font-size: 7px !important;
+            }
+            .detail-value {
+                font-size: 9px !important;
+            }
+            .qr-container img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        .event-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+        .venue-info {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .ticket-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-label {
+            font-size: 10px;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .detail-value {
+            font-size: 12px;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+        .ticket-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: #002059;
+            margin-top: auto;
+            font-family: "Courier New", monospace;
+            letter-spacing: 1px;
+        }
+        .qr-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .qr-container img {
+            width: 120px;
+            height: 120px;
+            display: block;
+        }
+        .qr-label {
+            font-size: 9px;
+            color: white;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        .ticket-type-strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #dc2626;
+            color: white;
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .event-graphic {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .event-graphic h3 {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .event-graphic p {
+            font-size: 8px;
+            opacity: 0.9;
+        }
+        .website {
+            position: absolute;
+            bottom: 10px;
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+        }
+        .ticket-inline p {
+            color: #718096;
+            margin: 5px 0;
+        }
+        .send-options {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .send-options h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .send-form {
+            display: grid;
+            gap: 15px;
+            max-width: 500px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            color: #718096;
+            font-weight: 500;
+        }
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        .btn-success {
+            background: #002059;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #003087;
+        }
+        .actions-section {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .actions-section .btn {
+            margin: 5px;
+        }
+        .navigation-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .navigation-buttons .btn {
+            width: 100%;
+            margin: 0;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: white !important;
+                padding: 20px !important;
+                font-size: 12pt !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .confirmation-header,
+            .booking-details,
+            .tickets-section {
+                background: white !important;
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+                padding: 20px !important;
+                margin-bottom: 20px !important;
+                page-break-inside: avoid;
+            }
+            .confirmation-header h1,
+            .booking-details h2,
+            .tickets-section h2 {
+                color: #000 !important;
+            }
+            .detail-label,
+            .detail-value,
+            .ticket-inline p,
+            .ticket-inline h3 {
+                color: #000 !important;
+            }
+            .ticket-inline {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+            }
+            .send-options,
+            .actions-section {
+                display: none !important;
+            }
+            .btn {
+                display: none !important;
+            }
+            #alert-success,
+            #alert-error {
+                display: none !important;
+            }
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #dc2626;
+        }
+        .alert.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading" class="loading">
+            <h2>Loading your booking...</h2>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <h2>Booking not found</h2>
+            <p>Your booking information could not be loaded.</p>
+            <a href="index.html" class="btn btn-primary" style="margin-top: 20px;">Return to Home</a>
+        </div>
+
+        <div id="confirmation-content" style="display: none;">
+            <div class="confirmation-header">
+                <div class="success-icon">✓</div>
+                <h1>Booking Confirmed!</h1>
+                <p>Your tickets have been generated successfully</p>
+            </div>
+
+            <div class="booking-details">
+                <h2>Booking Details</h2>
+                <div class="detail-row">
+                    <span class="detail-label">Booking Reference</span>
+                    <span class="detail-value" id="booking-ref"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Customer Name</span>
+                    <span class="detail-value" id="customer-name"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value" id="customer-email"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Amount</span>
+                    <span class="detail-value" id="total-amount"></span>
+                </div>
+            </div>
+
+            <div class="tickets-section">
+                <h2>Your Tickets</h2>
+                <div id="tickets-list"></div>
+            </div>
+
+            <div class="send-options">
+                <h2>Send Tickets</h2>
+                <div id="alert-success" class="alert success"></div>
+                <div id="alert-error" class="alert error"></div>
+                
+                <div class="send-form">
+                    <div class="form-group">
+                        <label>Send to Email:</label>
+                        <input type="email" id="send-email" placeholder="Enter email address">
+                    </div>
+                    <button class="btn btn-primary" onclick="sendToEmail()">Send to Email</button>
+                    
+                    <div style="margin-top: 20px;">
+                        <label>Send via SMS (Phone):</label>
+                        <input type="tel" id="send-phone" placeholder="Enter phone number (e.g., +231...)" style="margin-top: 5px;">
+                    </div>
+                    <button class="btn btn-primary" onclick="sendToPhone()" style="margin-top: 10px;">Send via SMS</button>
+                </div>
+            </div>
+
+            <div class="actions-section">
+                <button class="btn btn-primary" onclick="printTickets()">Print Tickets</button>
+                <div class="navigation-buttons">
+                    <a href="index.html" class="btn btn-secondary">Return to Home</a>
+                    <a href="dashboard.html" class="btn btn-secondary">View My Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bookingData = null;
+
+        // Load booking confirmation from sessionStorage
+        function loadConfirmation() {
+            const data = sessionStorage.getItem('bookingConfirmation');
+
+            if (!data) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+
+            try {
+                bookingData = JSON.parse(data);
+
+                // Hide loading, show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('confirmation-content').style.display = 'block';
+
+                // Populate booking details
+                document.getElementById('booking-ref').textContent = bookingData.booking.booking_reference;
+                document.getElementById('customer-name').textContent = bookingData.booking.customer_name;
+                document.getElementById('customer-email').textContent = bookingData.booking.customer_email;
+                document.getElementById('total-amount').textContent = 
+                    bookingData.booking.total_amount.toLocaleString() + ' ' + bookingData.booking.currency;
+
+                // Pre-fill email
+                document.getElementById('send-email').value = bookingData.booking.customer_email;
+
+                // Populate tickets inline
+                const ticketsList = document.getElementById('tickets-list');
+                ticketsList.innerHTML = '';
+
+                bookingData.items.forEach((item, index) => {
+                    item.tickets.forEach((ticket) => {
+                        const ticketDiv = document.createElement('div');
+                        ticketDiv.className = 'ticket-inline';
+
+                        const eventDate = new Date(item.event_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                        const seatInfo = ticket.seat_number || 'N/A';
+                        const blockInfo = 'N/A';
+                        const entranceInfo = 'Gate 1';
+                        const gateOpens = '1 hour before';
+
+                        ticketDiv.innerHTML = `
+                            <div class="ticket-left">
+                                <div class="event-title">${item.event_title}</div>
+                                <div class="venue-info">${item.venue_name}, ${item.city_name}</div>
+
+                                <div class="ticket-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Date</div>
+                                        <div class="detail-value">${eventDate}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Start Time</div>
+                                        <div class="detail-value">${item.event_time || '15:00'}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Ticket No.</div>
+                                        <div class="detail-value">${ticket.ticket_code}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Seat</div>
+                                        <div class="detail-value">${seatInfo}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Block</div>
+                                        <div class="detail-value">${blockInfo}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Entrance</div>
+                                        <div class="detail-value">${entranceInfo}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Gate Opens</div>
+                                        <div class="detail-value">${gateOpens}</div>
+                                    </div>
+                                </div>
+
+                                <div class="ticket-number">${ticket.ticket_code}</div>
+                            </div>
+
+                            <div class="ticket-right">
+                                <div class="qr-container">
+                                    <img src="/api/qrcode.php?data=${encodeURIComponent(ticket.ticket_code)}&size=120" alt="QR Code">
+                                </div>
+                                <div class="qr-label">ONE TIME VALID</div>
+
+                                <div class="event-graphic">
+                                    <h3>${item.event_title}</h3>
+                                    <p>TICKET</p>
+                                </div>
+
+                                <div class="website">www.libtickets.com</div>
+
+                                <div class="ticket-type-strip">${item.ticket_type_name}</div>
+                            </div>
+                        `;
+
+                        // Add action buttons below each ticket
+                        const ticketActions = document.createElement('div');
+                        ticketActions.style.cssText = 'display: flex; gap: 10px; justify-content: center; margin-top: 15px;';
+                        ticketActions.innerHTML = `
+                            <button onclick="printTicket('${ticket.ticket_code}')" style="padding: 8px 16px; background: #002059; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                                🖨️ Print This Ticket
+                            </button>
+                            <button onclick="sendTicketToEmail('${ticket.ticket_code}', '${item.event_title}')" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                                📧 Email This Ticket
+                            </button>
+                        `;
+
+                        const ticketContainer = document.createElement('div');
+                        ticketContainer.appendChild(ticketDiv);
+                        ticketContainer.appendChild(ticketActions);
+                        ticketsList.appendChild(ticketContainer);
+                    });
+                });
+
+                // Clear sessionStorage to prevent re-display
+                sessionStorage.removeItem('bookingConfirmation');
+
+            } catch (error) {
+                console.error('Error loading confirmation:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Send to email
+        function sendToEmail() {
+            const email = document.getElementById('send-email').value;
+            if (!email) {
+                alert('Please enter an email address');
+                return;
+            }
+
+            // Generate email content
+            const subject = `Your LibTickets - ${bookingData.booking.booking_reference}`;
+            const body = generateEmailBody(email);
+
+            // Open email client
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            showAlert('success', 'Email client opened. Please send the email.');
+        }
+
+        // Send to phone (SMS)
+        function sendToPhone() {
+            const phone = document.getElementById('send-phone').value;
+            if (!phone) {
+                alert('Please enter a phone number');
+                return;
+            }
+
+            // Generate SMS content
+            const message = generateSMSBody();
+
+            // Open SMS client (works on mobile)
+            window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`;
+
+            showAlert('success', 'SMS client opened. Please send the message.');
+        }
+
+        // Generate email body
+        function generateEmailBody(email) {
+            let body = `Dear ${bookingData.booking.customer_name},\n\n`;
+            body += `Your booking is confirmed!\n\n`;
+            body += `Booking Reference: ${bookingData.booking.booking_reference}\n`;
+            body += `Total Amount: ${bookingData.booking.total_amount} ${bookingData.booking.currency}\n\n`;
+            body += `Your Tickets:\n`;
+
+            bookingData.items.forEach((item) => {
+                item.tickets.forEach((ticket) => {
+                    body += `- ${item.event_title}\n`;
+                    body += `  Ticket Code: ${ticket.ticket_code}\n`;
+                    if (ticket.seat_number) body += `  Seat: ${ticket.seat_number}\n`;
+                    body += `  Date: ${new Date(item.event_date).toLocaleDateString()}\n`;
+                    if (item.event_time) body += `  Time: ${item.event_time}\n`;
+                    body += `  Venue: ${item.venue_name}\n\n`;
+                });
+            });
+
+            body += `View your tickets at: http://libtickets.gt.tc/\n\n`;
+            body += `Present your ticket QR codes at the venue for entry.\n\n`;
+            body += `For support: +231777683875`;
+
+            return body;
+        }
+
+        // Generate SMS body
+        function generateSMSBody() {
+            let message = `LibTickets Booking Confirmed! Ref: ${bookingData.booking.booking_reference}\n\n`;
+            message += `Ticket Codes:\n`;
+
+            bookingData.items.forEach((item) => {
+                item.tickets.forEach((ticket) => {
+                    message += `${ticket.ticket_code} (${item.event_title})\n`;
+                });
+            });
+
+            message += `\nView at: libtickets.gt.tc`;
+
+            return message;
+        }
+
+        // Show alert
+        function showAlert(type, message) {
+            const alertEl = document.getElementById(`alert-${type}`);
+            alertEl.textContent = message;
+            alertEl.classList.add('show');
+            setTimeout(() => alertEl.classList.remove('show'), 5000);
+        }
+
+        // Send individual ticket to email
+        function sendTicketToEmail(ticketCode, eventTitle) {
+            const subject = encodeURIComponent(`Your Ticket for ${eventTitle}`);
+            const body = encodeURIComponent(
+                `Dear Customer,\n\n` +
+                `Your ticket for ${eventTitle} is confirmed!\n\n` +
+                `Ticket Code: ${ticketCode}\n\n` +
+                `Please present this ticket code at the venue for entry.\n\n` +
+                `You can view your ticket at: http://libtickets.gt.tc/confirmation.html\n\n` +
+                `Thank you for using LibTickets!\n\n` +
+                `Best regards,\n` +
+                `LibTickets Team`
+            );
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+
+        // Print individual ticket
+        function printTicket(ticketCode) {
+            const printWindow = window.open(`/api/tickets.php/${ticketCode}/html`, '_blank');
+            printWindow.onload = function() {
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            };
+        }
+
+        // Print all tickets
+        function printTickets() {
+            if (bookingData.items && bookingData.items.length > 0) {
+                const firstTicket = bookingData.items[0].tickets[0];
+                if (firstTicket && firstTicket.ticket_code) {
+                    printTicket(firstTicket.ticket_code);
+                } else {
+                    alert('No tickets found to print');
+                }
+            } else {
+                alert('No tickets found to print');
+            }
+        }
+
+        // Initialize
+        loadConfirmation();
+    </script>
+</body>
+</html>

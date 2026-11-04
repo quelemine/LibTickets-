@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center - LibTickets</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+  <base href="/">
+  <div class="header-content">
+      <a href="./" class="logo">
+        <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="logo-image">
+      </a>
+      <nav id="main-nav">
+        <a href="/">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+        <a href="#" class="btn-login-nav" onclick="showLoginModal()">Log in</a>
+        <a href="#" class="btn-signup" onclick="showSignupModal()">Sign up</a>
+      </nav>
+      <div class="social-links-nav">
+        <a href="https://facebook.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+        <a href="https://twitter.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+          </svg>
+        </a>
+        <a href="https://instagram.com/libtickets" target="_blank" class="social-link-nav">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+      <div class="right-controls">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+          <span class="dark-icon">??</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMenu()">?</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1>Help Center</h1>
+        <p>Find answers to common questions and get help with your tickets</p>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <div class="about-content">
+          <h2>Getting Started</h2>
+          <div class="faq-item">
+            <h3>How do I create an account?</h3>
+            <p>Click "Sign up" in the top right corner of our website. Fill in your name, email, and password to create your account.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I find events?</h3>
+            <p>Browse our homepage for featured events, or visit the Concerts, Sports, or Conferences pages to filter by category.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I purchase tickets?</h3>
+            <p>Select an event, choose your ticket type and quantity, and proceed to checkout. You can pay using LRD or USD.</p>
+          </div>
+
+          <h2>Ticket Management</h2>
+          <div class="faq-item">
+            <h3>Where can I find my purchased tickets?</h3>
+            <p>Your tickets are sent to your email after purchase. You can also view them in your account dashboard.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I use my ticket at an event?</h3>
+            <p>Show your QR code at the event entrance. Our staff will scan it to validate your ticket.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I transfer my ticket to someone else?</h3>
+            <p>Tickets are non-transferable unless specified by the event organizer. Contact support for special requests.</p>
+          </div>
+
+          <h2>Payments & Refunds</h2>
+          <div class="faq-item">
+            <h3>What payment methods do you accept?</h3>
+            <p>We accept mobile money, bank transfers, and cash payments at designated locations.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is your refund policy?</h3>
+            <p>Refund policies vary by event. Please check the event details or contact support for specific refund information.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do currency conversions work?</h3>
+            <p>We display prices in both LRD and USD. The exchange rate is set by the platform and updated regularly.</p>
+          </div>
+
+          <h2>Account Issues</h2>
+          <div class="faq-item">
+            <h3>I forgot my password. What should I do?</h3>
+            <p>Click "Log in" and select "Forgot password" to reset your password via email.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How do I update my profile information?</h3>
+            <p>Log in to your account and navigate to the profile section to update your personal information.</p>
+          </div>
+
+          <h2>Still Need Help?</h2>
+          <p>If you couldn't find the answer to your question, please contact our support team.</p>
+          <a href="support.html" class="btn-book" style="display: inline-block; margin-top: 1rem;">Contact Support</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>LibTickets</h3>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="careers.html">Careers</a>
+      </div>
+      <div class="footer-section">
+        <h3>Events</h3>
+        <a href="concerts.html">Concerts</a>
+        <a href="sports.html">Sports</a>
+        <a href="conferences.html">Conferences</a>
+      </div>
+      <div class="footer-section">
+        <h3>Locations</h3>
+        <a href="locations.html">Monrovia</a>
+        <a href="locations.html">Paynesville</a>
+        <a href="locations.html">Gbarnga</a>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <a href="support.html">Support</a>
+        <a href="help-center.html">Help Center</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://facebook.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+          <a href="https://twitter.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+            </svg>
+          </a>
+          <a href="https://instagram.com/libtickets" target="_blank" class="social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LibTickets. All rights reserved. | Events • Tickets • Liberia</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

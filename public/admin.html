@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibTickets - Admin Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="images/libtickets_logo.png">
+  <link rel="stylesheet" href="css/styles.css?v=6.0">
+</head>
+<body>
+  <!-- Admin Dashboard (shown when authenticated) -->
+  <div id="admin-dashboard" class="admin-dashboard-wrapper hidden">
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+    
+    <!-- Left Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="sidebar-logo">
+        <h3>Admin menu</h3>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" onclick="showSection('dashboard')">
+          <span class="sidebar-icon">📊</span>
+          Dashboard
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('events')">
+          <span class="sidebar-icon">🎫</span>
+          Events
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('bookings')">
+          <span class="sidebar-icon">📋</span>
+          Bookings
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('venues')">
+          <span class="sidebar-icon">🏛️</span>
+          Venues
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('categories')">
+          <span class="sidebar-icon">📂</span>
+          Categories
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('slideshow')">
+          <span class="sidebar-icon">🖼️</span>
+          Slideshow
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('settings')">
+          <span class="sidebar-icon">⚙️</span>
+          Settings
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('activity')">
+          <span class="sidebar-icon">📝</span>
+          Activity Log
+        </a>
+        <a href="#" class="sidebar-link" onclick="showSection('profile')">
+          <span class="sidebar-icon">👤</span>
+          My Profile
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="./" class="sidebar-link">← Back to Site</a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Top Bar -->
+      <div class="admin-topbar">
+        <div class="topbar-left">
+          <button class="hamburger-menu" onclick="toggleSidebar()" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <img src="images/libtickets_logo.png" alt="LibTickets Logo" class="topbar-logo">
+          <h1 id="page-title">Admin dashboard</h1>
+        </div>
+        <div class="admin-profile">
+          <div class="profile-info">
+            <span class="profile-name" id="admin-name">Administrator</span>
+            <span class="profile-email" id="admin-email-display">admin@libtickets.com</span>
+          </div>
+          <div class="profile-dropdown">
+            <button class="profile-menu-btn" onclick="toggleProfileMenu()">▼</button>
+            <div class="profile-menu hidden" id="profile-menu">
+              <a href="#" onclick="logout()">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Section -->
+      <div id="section-dashboard" class="admin-content">
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="summary-label">Events</div>
+            <div class="summary-value" id="stat-events">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Tickets sold</div>
+            <div class="summary-value" id="stat-tickets-sold">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Tickets left</div>
+            <div class="summary-value" id="stat-tickets-left">0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Bookings</div>
+            <div class="summary-value" id="stat-bookings">0</div>
+          </div>
+        </div>
+
+        <!-- Events Table -->
+        <div class="dashboard-section">
+          <h2>Events and ticket availability</h2>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Venue</th>
+                  <th>County</th>
+                  <th>Date</th>
+                  <th>Tiers</th>
+                  <th>Left</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-events-table">
+                <!-- Events loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="dashboard-actions">
+            <button class="btn-admin-action" onclick="showSection('events')">Add event</button>
+            <button class="btn-admin-action" onclick="showSection('bookings')">View bookings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Section -->
+      <div id="section-events" class="admin-content hidden">
+        <div class="section-header">
+          <h2>Events</h2>
+          <button class="btn-admin-action" onclick="showEventForm()">+ Add Event</button>
+        </div>
+
+        <!-- Event Form (hidden by default) -->
+        <div id="event-form" class="admin-form-container hidden">
+          <h3 id="event-form-title">Add New Event</h3>
+          <form onsubmit="saveEvent(event)">
+            <input type="hidden" id="event-id">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Event Title *</label>
+                <input type="text" id="event-title" required>
+              </div>
+              <div class="form-group">
+                <label>Venue *</label>
+                <select id="event-venue" required>
+                  <option value="">Select Venue</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>County/City *</label>
+                <select id="event-county" required onchange="loadCitiesForCounty(this.value)">
+                  <option value="">Select County</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Date *</label>
+                <input type="date" id="event-date" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Ticket tiers and quantities</label>
+              <div id="ticket-tiers-container">
+                <div class="ticket-tier-row">
+                  <input type="text" placeholder="Tier name (e.g., VIP)" class="tier-name">
+                  <input type="number" placeholder="Quantity" class="tier-quantity" min="1">
+                  <input type="number" placeholder="Price" class="tier-price" step="0.01" min="0">
+                  <select class="tier-currency">
+                    <option value="LRD">LRD</option>
+                    <option value="USD">USD</option>
+                  </select>
+                  <button type="button" class="btn-remove-tier" onclick="removeTicketTier(this)">×</button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-tier" onclick="addTicketTier()">+ Add Ticket Tier</button>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="event-description" rows="3"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Start time</label>
+                <input type="time" id="event-time">
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="event-category">
+                  <option value="">Select Category</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Image URL (Optional)</label>
+              <input type="text" id="event-image" placeholder="https://example.com/image.jpg">
+            </div>
+            <div class="form-group">
+              <label>Or Upload from Device (Optional)</label>
+              <input type="file" id="event-file" accept="image/*,video/*">
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="event-status">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-save">Save event</button>
+              <button type="button" onclick="hideEventForm()" class="btn-admin-cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Events Table -->
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Venue</th>
+                <th>County</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="events-table-body">
+              <!-- Events loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bookings Section -->
+      <div id="section-bookings" class="admin-content hidden">
+        <h2>Bookings</h2>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Total</th>
+                <th>Currency</th>
+                <th>Tickets</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="bookings-table-body">
+              <!-- Bookings loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Venues Section -->
+      <div id="section-venues" class="admin-content hidden">
+        <div class="section-header">
+          <h2>Venues</h2>
+          <button class="btn-admin-action" onclick="showVenueForm()">+ Add Venue</button>
+        </div>
+
+        <!-- Venue Form (hidden by default) -->
+        <div id="venue-form" class="admin-form-container hidden">
+          <h3 id="venue-form-title">Add New Venue</h3>
+          <form onsubmit="saveVenue(event)">
+            <input type="hidden" id="venue-id">
+            <div class="form-group">
+              <label>Venue Name *</label>
+              <input type="text" id="venue-name" required>
+            </div>
+            <div class="form-group">
+              <label>County/City *</label>
+              <select id="venue-county" required>
+                <option value="">Select County</option>
+                <option value="Montserrado">Montserrado</option>
+                <option value="Bong">Bong</option>
+                <option value="Nimba">Nimba</option>
+                <option value="Grand Bassa">Grand Bassa</option>
+                <option value="Lofa">Lofa</option>
+                <option value="Grand Cape Mount">Grand Cape Mount</option>
+                <option value="Grand Kru">Grand Kru</option>
+                <option value="Maryland">Maryland</option>
+                <option value="Sinoe">Sinoe</option>
+                <option value="River Cess">River Cess</option>
+                <option value="Grand Gedeh">Grand Gedeh</option>
+                <option value="River Gee">River Gee</option>
+                <option value="Margibi">Margibi</option>
+                <option value="Bomi">Bomi</option>
+                <option value="Gbarpolu">Gbarpolu</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="venue-city" required placeholder="e.g., Monrovia">
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" id="venue-address" placeholder="Street address">
+            </div>
+            <div class="form-group">
+              <label>Capacity</label>
+              <input type="number" id="venue-capacity" min="1" placeholder="Maximum capacity">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="venue-description" rows="3" placeholder="Venue description"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-save">Save venue</button>
+              <button type="button" onclick="hideVenueForm()" class="btn-admin-cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Venues Table -->
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>County</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="venues-table-body">
+              <!-- Venues loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Categories Section -->
+      <div id="section-categories" class="admin-content hidden">
+        <div class="section-header">
+          <h2>Categories</h2>
+        </div>
+
+        <!-- Categories Table -->
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Image</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-table-body">
+              <!-- Categories loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Slideshow Section -->
+      <div id="section-slideshow" class="admin-content hidden">
+        <div class="section-header">
+          <h2>Slideshow Images</h2>
+          <button class="btn-admin-action" onclick="showSlideshowForm()">+ Add Image</button>
+        </div>
+        <div id="slideshow-form" class="admin-form-container hidden">
+          <form onsubmit="saveSlideshowImage(event)">
+            <div class="form-group">
+              <label>Image</label>
+              <input type="file" id="slideshow-image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+              <label>Title (Optional)</label>
+              <input type="text" id="slideshow-title" placeholder="Slide title">
+            </div>
+            <div class="form-group">
+              <label>Order</label>
+              <input type="number" id="slideshow-order" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+              <label>Active</label>
+              <input type="checkbox" id="slideshow-active" checked>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-admin-action">Save Image</button>
+              <button type="button" class="btn-admin-action btn-secondary" onclick="hideSlideshowForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Preview</th>
+                <th>Title</th>
+                <th>Order</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="slideshow-table-body">
+              <!-- Slideshow images loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div id="section-settings" class="admin-content hidden">
+        <h2>Settings</h2>
+        
+        <!-- General Settings -->
+        <div class="settings-panel">
+          <h3>General Settings</h3>
+          <div class="form-group">
+            <label>Site Name</label>
+            <input type="text" id="site-name" placeholder="LibTickets">
+          </div>
+          <div class="form-group">
+            <label>Site Tagline</label>
+            <input type="text" id="site-tagline" placeholder="Discover Events. Book Tickets. Make Memories.">
+          </div>
+          <div class="form-group">
+            <label>Contact Email</label>
+            <input type="email" id="contact-email" placeholder="info@libtickets.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="contact-phone" placeholder="+231 (XXX) XXX-XXXX">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="contact-location" placeholder="Monrovia, Liberia">
+          </div>
+          <button class="btn-admin-action" onclick="saveGeneralSettings()">Save General Settings</button>
+        </div>
+
+        <!-- Logo Settings -->
+        <div class="settings-panel">
+          <h3>Logo Settings</h3>
+          <div class="form-group">
+            <label>Current Logo</label>
+            <div id="current-logo-preview" style="margin-bottom: 1rem;">
+              <img src="images/libtickets_logo.png" alt="Current Logo" style="max-height: 100px;">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Upload New Logo</label>
+            <input type="file" id="logo-file" accept="image/*">
+          </div>
+          <button class="btn-admin-action" onclick="uploadLogo()">Upload Logo</button>
+        </div>
+
+        <!-- Exchange Rate Settings -->
+        <div class="settings-panel">
+          <h3>Exchange Rate</h3>
+          <div class="form-group">
+            <label>USD to LRD Exchange Rate</label>
+            <input type="number" id="exchange-rate-input" step="0.01" value="200">
+          </div>
+          <button class="btn-admin-action" onclick="updateExchangeRate()">Update Exchange Rate</button>
+          <p class="rate-info">
+            Current rate: <span id="current-rate">200</span> LRD per USD
+          </p>
+        </div>
+
+        <!-- Social Media Settings -->
+        <div class="settings-panel">
+          <h3>Social Media Links</h3>
+          <div class="form-group">
+            <label>Facebook URL</label>
+            <input type="url" id="social-facebook" value="https://facebook.com/libtickets">
+          </div>
+          <div class="form-group">
+            <label>Twitter/X URL</label>
+            <input type="url" id="social-twitter" value="https://twitter.com/libtickets">
+          </div>
+          <div class="form-group">
+            <label>Instagram URL</label>
+            <input type="url" id="social-instagram" value="https://instagram.com/libtickets">
+          </div>
+          <button class="btn-admin-action" onclick="saveSocialSettings()">Save Social Settings</button>
+        </div>
+
+        <!-- Theme Settings -->
+        <div class="settings-panel">
+          <h3>Theme Settings</h3>
+          <div class="form-group">
+            <label>Primary Color</label>
+            <input type="color" id="theme-primary" value="#002057">
+          </div>
+          <div class="form-group">
+            <label>Accent Color</label>
+            <input type="color" id="theme-accent" value="#e31937">
+          </div>
+          <button class="btn-admin-action" onclick="saveThemeSettings()">Save Theme Settings</button>
+        </div>
+      </div>
+
+      <!-- Activity Log Section -->
+      <div id="section-activity" class="admin-content hidden">
+        <h2>Activity Log</h2>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date/Time</th>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Description</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="activity-log-table-body">
+              <!-- Activity logs loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div id="section-profile" class="admin-content hidden">
+        <h2>My Profile</h2>
+        
+        <div class="settings-panel">
+          <h3>Account Information</h3>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="profile-full-name" placeholder="Enter your full name">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="profile-email" placeholder="Enter your email" disabled>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="profile-phone" placeholder="Enter your phone number">
+          </div>
+          <button class="btn-admin-action" onclick="updateProfile()">Update Profile</button>
+        </div>
+
+        <div class="settings-panel">
+          <h3>Change Password</h3>
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="current-password" placeholder="Enter current password">
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="new-password" placeholder="Enter new password">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm new password">
+          </div>
+          <button class="btn-admin-action" onclick="changePassword()">Change Password</button>
+        </div>
+
+        <div class="settings-panel">
+          <h3>Account Status</h3>
+          <div class="form-group">
+            <label>Role</label>
+            <input type="text" id="profile-role" value="Administrator" disabled>
+          </div>
+          <div class="form-group">
+            <label>Account Created</label>
+            <input type="text" id="profile-created" disabled>
+          </div>
+          <div class="form-group">
+            <label>Email Verified</label>
+            <input type="text" id="profile-verified" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js?v=9.0"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Rewrite /api/* to api/*.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/$1.php [L,QSA]
+
+# Serve index.html for root
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ index.html [L]
+
+# Block access to sensitive files
+<FilesMatch "\.(env|json|lock|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Block access to sensitive directories (relative to public/)
+RedirectMatch 404 ^/(config|src|vendor)/(.*)$
+
+# Prevent directory listing
+Options -Indexes

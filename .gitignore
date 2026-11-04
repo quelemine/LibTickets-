@@ -1,0 +1,56 @@
+# Credentials and sensitive files
+.env
+.env.local
+.env.production
+*.key
+*.pem
+config.php
+database.php
+credentials.json
+
+# Logs
+logs/
+*.log
+php-errors.log
+
+# Upload and deployment scripts
+upload-*.ps1
+infinityfree_deploy_*/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Database backups
+*.sql
+*.db
+*.sqlite
+
+# User uploads
+uploads/
+
+# Test files
+test-*.php
+check-*.php
+api-test-*.php

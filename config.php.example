@@ -1,0 +1,30 @@
+<?php
+// Database Configuration
+// Replace these with your actual credentials in production
+define('DB_HOST', 'sql200.infinityfree.com');
+define('DB_NAME', 'if0_43339001_libtickets');
+define('DB_USER', 'if0_43339001');
+define('DB_PASS', 'YOUR_DATABASE_PASSWORD_HERE');
+
+// FTP Configuration (for deployment)
+define('FTP_SERVER', 'ftp://ftpupload.net');
+define('FTP_USERNAME', 'if0_43339001');
+define('FTP_PASSWORD', 'YOUR_FTP_PASSWORD_HERE');
+define('FTP_REMOTE_PATH', '/htdocs');
+
+// Payment Gateway Configuration (if using Flutterwave)
+define('FLUTTERWAVE_PUBLIC_KEY', 'FLWPUBK-YOUR-PUBLIC-KEY');
+define('FLUTTERWAVE_SECRET_KEY', 'FLWSECK-YOUR-SECRET-KEY');
+define('FLUTTERWAVE_ENCRYPTION_KEY', 'YOUR-ENCRYPTION-KEY');
+
+// Site Configuration
+define('SITE_URL', 'http://libtickets.gt.tc');
+define('SITE_NAME', 'LibTickets');
+
+// Email Configuration
+define('EMAIL_FROM', 'noreply@libtickets.gt.tc');
+define('EMAIL_REPLY_TO', 'support@libtickets.com');
+
+// Test Mode
+define('TEST_MODE', true);
+?>
