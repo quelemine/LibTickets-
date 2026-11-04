@@ -1455,7 +1455,8 @@ body.dark-mode .quantity-selector input {
   z-index: 100;
   overflow-y: auto;
   overflow-x: hidden;
-  justify-content: flex-start; /* Align items to top, not space-between */
+  justify-content: flex-start;
+  max-height: 100vh;
 }
 
 .sidebar-header {
@@ -1482,9 +1483,9 @@ body.dark-mode .quantity-selector input {
 }
 
 .sidebar-nav {
-  flex: 0 1 auto; /* Don't grow, allow shrinking */
+  flex: 1 1 auto;
   padding: 1rem 0;
-  overflow-y: visible; /* Change from auto to visible */
+  overflow-y: auto;
   overflow-x: hidden;
   display: flex !important;
   flex-direction: column !important;
@@ -1538,7 +1539,6 @@ body.dark-mode .quantity-selector input {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
-  margin-top: auto; /* Push footer to bottom */
 }
 
 .sidebar-footer .sidebar-link {
