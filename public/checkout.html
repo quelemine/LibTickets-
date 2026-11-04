@@ -535,9 +535,11 @@
   <script>
     let selectedOption = null;
     let checkoutData = null;
+    let currentExchangeRate = 200; // Default: 200 LRD = 1 USD
 
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
+      loadExchangeRate();
       loadCheckoutData();
 
       // Check if user is returning from seat selection error
@@ -580,20 +582,59 @@
       if (!checkoutData || !checkoutData.items) return;
 
       const orderItemsDiv = document.getElementById('order-items');
+      const selectedCurrency = document.getElementById('currency').value;
       let total = 0;
 
       orderItemsDiv.innerHTML = checkoutData.items.map(item => {
-        const itemTotal = item.price_per_ticket * item.quantity;
+        let price = item.price_per_ticket;
+        let itemCurrency = item.currency;
+
+        // Convert currency if different from selected
+        if (itemCurrency !== selectedCurrency) {
+          price = convertPrice(price, itemCurrency, selectedCurrency);
+          itemCurrency = selectedCurrency;
+        }
+
+        const itemTotal = price * item.quantity;
         total += itemTotal;
         return `
           <div class="order-item">
             <span>${item.ticket_name} x ${item.quantity}</span>
-            <span>${item.currency} ${itemTotal.toLocaleString()}</span>
+            <span>${itemCurrency} ${itemTotal.toLocaleString()}</span>
           </div>
         `;
       }).join('');
 
-      document.getElementById('order-total').textContent = `${checkoutData.items[0].currency} ${total.toLocaleString()}`;
+      document.getElementById('order-total').textContent = `${selectedCurrency} ${total.toLocaleString()}`;
+    }
+
+    // Convert price based on exchange rate
+    function convertPrice(price, fromCurrency, toCurrency) {
+      if (fromCurrency === toCurrency) return price;
+
+      const exchangeRate = currentExchangeRate || 200; // Default 200 LRD = 1 USD
+
+      if (fromCurrency === 'LRD' && toCurrency === 'USD') {
+        return price / exchangeRate;
+      } else if (fromCurrency === 'USD' && toCurrency === 'LRD') {
+        return price * exchangeRate;
+      }
+
+      return price;
+    }
+
+    // Load exchange rate
+    async function loadExchangeRate() {
+      try {
+        const res = await fetch('/api/exchange-rate.php');
+        const data = await res.json();
+        if (data.rate) {
+          currentExchangeRate = data.rate;
+        }
+      } catch (error) {
+        console.error('Error loading exchange rate:', error);
+        currentExchangeRate = 200; // Default fallback
+      }
     }
 
     // Select checkout option
@@ -684,8 +725,21 @@
       submitBtn.textContent = 'Processing Booking...';
 
       try {
-        // Calculate total amount
-        const totalAmount = checkoutData.items.reduce((sum, item) => {
+        // Convert prices based on selected currency
+        const convertedItems = checkoutData.items.map(item => {
+          let price = item.price_per_ticket;
+          if (item.currency !== currency) {
+            price = convertPrice(price, item.currency, currency);
+          }
+          return {
+            ...item,
+            price_per_ticket: price,
+            currency: currency
+          };
+        });
+
+        // Calculate total amount with converted prices
+        const totalAmount = convertedItems.reduce((sum, item) => {
           return sum + (item.price_per_ticket * item.quantity);
         }, 0);
 
@@ -695,7 +749,7 @@
           customer_email: email,
           customer_phone: phone,
           delivery_method: 'email',
-          items: checkoutData.items,
+          items: convertedItems,
           currency: currency,
           seat_selections: checkoutData.seat_selections || [],
           payment_status: 'paid', // Testing mode
@@ -811,8 +865,14 @@
     }
 
     // Initialize
+    loadExchangeRate();
     loadCheckoutData();
     checkAuth();
+
+    // Update order summary when currency changes
+    document.getElementById('currency').addEventListener('change', function() {
+      displayOrderSummary();
+    });
   </script>
 </body>
 </html>
