@@ -21,26 +21,28 @@ function getDb() {
 
 try {
     $db = getDb();
-    
+
     $query = "
-        SELECT b.*, u.email as user_email, u.full_name as user_name
+        SELECT b.*, u.email as user_email, u.full_name as user_name,
+               (SELECT COUNT(*) FROM tickets t JOIN booking_items bi ON t.booking_item_id = bi.id WHERE bi.booking_id = b.id) as total_tickets
         FROM bookings b
         LEFT JOIN users u ON b.user_id = u.id
         ORDER BY b.created_at DESC
     ";
-    
+
     $stmt = $db->query($query);
     $bookings = $stmt->fetchAll();
-    
+
     foreach ($bookings as &$booking) {
         $booking['id'] = (int)$booking['id'];
         $booking['user_id'] = $booking['user_id'] ? (int)$booking['user_id'] : null;
         $booking['total_amount'] = (float)$booking['total_amount'];
         $booking['exchange_rate'] = (float)$booking['exchange_rate'];
+        $booking['total_tickets'] = (int)$booking['total_tickets'];
     }
-    
+
     echo json_encode($bookings);
-    
+
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
