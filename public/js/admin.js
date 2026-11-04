@@ -1451,7 +1451,7 @@ async function loadSlideshowImages() {
           <img src="${img.image_url}" alt="${img.title || 'Slide'}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;">
         </td>
         <td>${img.title || '-'}</td>
-        <td>${img.order}</td>
+        <td>${img.order_num || 0}</td>
         <td>${img.active ? '<span style="color: green;">Active</span>' : '<span style="color: red;">Inactive</span>'}</td>
         <td>
           <button class="btn-action" onclick="editSlideshowImage(${img.id})">Edit</button>
@@ -1466,13 +1466,13 @@ async function loadSlideshowImages() {
 
 async function editSlideshowImage(id) {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/slideshow.php?id=${id}`);
+    const res = await fetch(`${API_BASE_URL}/api/admin/slideshow.php?id=${id}`);
     const image = await res.json();
 
     document.getElementById('slideshow-form').classList.remove('hidden');
     document.getElementById('slideshow-form').dataset.editId = id;
     document.getElementById('slideshow-title').value = image.title || '';
-    document.getElementById('slideshow-order').value = image.order;
+    document.getElementById('slideshow-order').value = image.order_num || 0;
     document.getElementById('slideshow-active').checked = image.active === 1;
     document.getElementById('slideshow-image').value = ''; // Don't pre-fill file input
   } catch (error) {
